@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id "com.google.protobuf" version "0.9.1"
 }
 
 android {
@@ -47,7 +48,8 @@ android {
 }
 
 dependencies {
-
+    implementation 'androidx.datastore:datastore:1.0.0'
+    implementation 'com.google.protobuf:protobuf-javalite:3.18.0'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.5.1'
@@ -63,4 +65,20 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.18.0"
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+        }
+    }
 }
