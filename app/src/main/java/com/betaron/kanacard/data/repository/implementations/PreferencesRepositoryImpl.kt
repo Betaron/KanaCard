@@ -24,11 +24,9 @@ class PreferencesRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun switchAlphabet() {
-        val newVal = if (getCurrentAlphabet() == Alphabet.hiragana)
-            Alphabet.katakana else Alphabet.hiragana
+    override suspend fun setAlphabet(alphabet : Alphabet) {
         dataStore.updateData { preferences ->
-            preferences.toBuilder().setAlphabet(newVal).build()
+            preferences.toBuilder().setAlphabet(alphabet).build()
         }
     }
 
