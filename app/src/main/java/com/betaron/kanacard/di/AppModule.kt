@@ -10,6 +10,7 @@ import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
 import com.betaron.kanacard.data.serializer.PreferencesSerializer
 import com.betaron.kanacard.use_case.AlphabetUseCases
 import com.betaron.kanacard.use_case.GetAlphabet
+import com.betaron.kanacard.use_case.GetLastSymbol
 import com.betaron.kanacard.use_case.SetAlphabet
 import com.kanacard.application.Preferences
 import dagger.Module
@@ -43,7 +44,8 @@ object AppModule {
     fun providesAlphabetUseCases(preferencesRepository: PreferencesRepository) : AlphabetUseCases {
         return AlphabetUseCases(
             getAlphabet = GetAlphabet(preferencesRepository),
-            setAlphabet = SetAlphabet(preferencesRepository)
+            setAlphabet = SetAlphabet(preferencesRepository),
+            getLastSymbol = GetLastSymbol(preferencesRepository)
         )
     }
 }

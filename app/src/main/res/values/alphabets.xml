@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="hiragana">
+        <item>あ</item>
+        <item>い</item>
+        <item>う</item>
+        <item>え</item>
+        <item>お</item>
+    </string-array>
+    <string-array name="katakana">
+        <item>ア</item>
+        <item>イ</item>
+        <item>ウ</item>
+        <item>エ</item>
+        <item>オ</item>
+    </string-array>
+</resources>

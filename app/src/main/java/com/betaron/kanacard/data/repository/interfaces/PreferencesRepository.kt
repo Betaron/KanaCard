@@ -7,6 +7,6 @@ interface PreferencesRepository {
     suspend fun getCurrentAlphabet() : Alphabet
     fun getSelected() : List<Boolean>
     fun setSelected(indexes : List<Boolean>)
-    fun getLastSymbol() : Int
-    fun setLastSymbol(index: Int)
+    suspend fun getLastSymbol() : Int
+    suspend fun setLastSymbol(index: Int)
 }

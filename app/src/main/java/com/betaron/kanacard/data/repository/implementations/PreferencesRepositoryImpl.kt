@@ -42,12 +42,14 @@ class PreferencesRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun getLastSymbol(): Int {
-        TODO("Not yet implemented")
+    override suspend fun getLastSymbol(): Int {
+        return  preferencesFlow.first().lastSymbolIndex
     }
 
-    override fun setLastSymbol(index: Int) {
-        TODO("Not yet implemented")
+    override suspend fun setLastSymbol(index: Int) {
+        dataStore.updateData { preferences ->
+            preferences.toBuilder().setLastSymbolIndex(index).build()
+        }
     }
 
 }

@@ -1,8 +1,11 @@
 package com.betaron.kanacard.ui.main
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.betaron.kanacard.ui.main.components.SegmentedButton
 
@@ -16,11 +19,19 @@ fun MainScreen(
         "Hiragana",
         "Katakana"
     )
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
 
-    SegmentedButton(
-        items = alphabets,
-        defaultSelectedItemIndex = state.alphabet,
-        onItemSelection = {
-        viewModel.onEvent(MainEvent.SwitchAlphabet(it))
-    })
+    ) {
+        SegmentedButton(
+            items = alphabets,
+            defaultSelectedItemIndex = state.alphabet,
+            onItemSelection = {
+                viewModel.onEvent(MainEvent.SwitchAlphabet(it))
+            }
+        )
+        Card {
+            Text(text = state.currentSymbol)
+        }
+    }
 }
