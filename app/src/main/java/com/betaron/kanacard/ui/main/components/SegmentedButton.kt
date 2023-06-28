@@ -29,7 +29,7 @@ fun SegmentedButton(
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
-    cornerRadius : Int = 100,
+    cornerRadius: Int = 100,
     onItemSelection: (selectedItemIndex: Int) -> Unit
 ) {
     val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
@@ -52,7 +52,9 @@ fun SegmentedButton(
                                 .offset(0.dp, 0.dp)
                                 .zIndex(if (selectedIndex.value == index) 1f else 0f)
                         }
-                    } else -> {
+                    }
+
+                    else -> {
                         if (useFixedWidth)
                             Modifier
                                 .width(itemWidth)

@@ -6,7 +6,7 @@ import com.betaron.kanacard.extensions.toInt
 class GetAlphabet(
     private val preferencesRepository: PreferencesRepository
 ) {
-  suspend operator fun invoke() : Int {
-      return  preferencesRepository.getAlphabet().toInt()
-  }
+    suspend operator fun invoke(): Int {
+        return preferencesRepository.getAlphabet().toInt()
+    }
 }

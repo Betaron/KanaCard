@@ -11,13 +11,13 @@ import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream
 
-object  PreferencesSerializer : Serializer<Preferences> {
+object PreferencesSerializer : Serializer<Preferences> {
     override val defaultValue: Preferences = Preferences.getDefaultInstance()
 
     override suspend fun readFrom(input: InputStream): Preferences {
         try {
             return Preferences.parseFrom(input)
-        } catch (exception : InvalidProtocolBufferException){
+        } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
         }
     }
@@ -26,7 +26,7 @@ object  PreferencesSerializer : Serializer<Preferences> {
         t.writeTo(output)
 }
 
-private val Context.dataStore  : DataStore<Preferences>  by  dataStore(
+private val Context.dataStore: DataStore<Preferences> by dataStore(
     fileName = Constants.DATA_STORE_FILE_NAME,
     serializer = PreferencesSerializer
 )

@@ -35,7 +35,7 @@ fun MainScreen(
         Button(
             onClick = {
                 viewModel.onEvent(MainEvent.PickNewSymbol)
-        }) {
+            }) {
             Text(text = "random")
         }
     }
