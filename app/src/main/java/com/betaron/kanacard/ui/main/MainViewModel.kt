@@ -12,17 +12,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    application: Application,
     private val alphabetUseCases: AlphabetUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(MainState())
     val state: State<MainState> = _state
-
-    private val hiragana: Array<String> = application.resources.getStringArray(R.array.hiragana)
-    private val katakana: Array<String> = application.resources.getStringArray(R.array.katakana)
 
     init {
         loadAlphabet()
@@ -32,21 +29,26 @@ class MainViewModel @Inject constructor(
         when(event){
             is MainEvent.SwitchAlphabet -> {
                 if (state.value.alphabet != event.alphabetIndex)
+                    _state.value = state.value.copy(
+                        alphabet = event.alphabetIndex,
+                        alphabetSymbols =
+                            alphabetUseCases.getAlphabetSymbolsSet(event.alphabetIndex)
+                    )
+
                     viewModelScope.launch {
-                        _state.value = state.value.copy(
-                            alphabet = event.alphabetIndex,
-                            alphabetSymbols =
-                                if (event.alphabetIndex == Alphabet.hiragana_VALUE) hiragana
-                                else katakana
-                        )
-
-                        _state.value = state.value.copy(
-                            currentSymbol =
-                                state.value.alphabetSymbols[state.value.currentSymbolIndex]
-                        )
-
                         alphabetUseCases.setAlphabet(_state.value.alphabet)
                     }
+            }
+            is MainEvent.PickNewSymbol -> {
+                val randomIndex = if (state.value.selectedSymbols.size == 1) 0
+                else {
+                    val mutableSelected = state.value.selectedSymbols.toMutableList()
+                    mutableSelected.remove(state.value.currentSymbolIndex)
+                    mutableSelected.random()
+                }
+                _state.value = state.value.copy(
+                    currentSymbolIndex = randomIndex
+                )
             }
         }
     }
@@ -57,15 +59,11 @@ class MainViewModel @Inject constructor(
             val lastSymbolIndex = alphabetUseCases.getLastSymbol()
             _state.value = state.value.copy(
                 alphabet = alphabetIndex,
-                alphabetSymbols =
-                    if (alphabetIndex == Alphabet.hiragana_VALUE) hiragana
-                    else katakana,
+                alphabetSymbols = alphabetUseCases.getAlphabetSymbolsSet(alphabetIndex),
                 currentSymbolIndex = lastSymbolIndex
             )
-
             _state.value = state.value.copy(
-                currentSymbol =
-                    state.value.alphabetSymbols[state.value.currentSymbolIndex]
+                selectedSymbols = listOf(0, 1, 2, 3, 4)
             )
         }
     }

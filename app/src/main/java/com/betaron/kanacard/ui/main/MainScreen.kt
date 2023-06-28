@@ -1,10 +1,12 @@
 package com.betaron.kanacard.ui.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.betaron.kanacard.ui.main.components.SegmentedButton
@@ -31,7 +33,13 @@ fun MainScreen(
             }
         )
         Card {
-            Text(text = state.currentSymbol)
+            Text(text = state.alphabetSymbols[state.currentSymbolIndex])
+        }
+        Button(
+            onClick = {
+                viewModel.onEvent(MainEvent.PickNewSymbol)
+        }) {
+            Text(text = "random")
         }
     }
 }

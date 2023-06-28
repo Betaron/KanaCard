@@ -1,5 +1,6 @@
 package com.betaron.kanacard.di
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
@@ -10,6 +11,7 @@ import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
 import com.betaron.kanacard.data.serializer.PreferencesSerializer
 import com.betaron.kanacard.use_case.AlphabetUseCases
 import com.betaron.kanacard.use_case.GetAlphabet
+import com.betaron.kanacard.use_case.GetAlphabetSymbolsSet
 import com.betaron.kanacard.use_case.GetLastSymbol
 import com.betaron.kanacard.use_case.SetAlphabet
 import com.kanacard.application.Preferences
@@ -41,11 +43,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesAlphabetUseCases(preferencesRepository: PreferencesRepository) : AlphabetUseCases {
+    fun providesAlphabetUseCases(
+        application: Application,
+        preferencesRepository: PreferencesRepository
+    ) : AlphabetUseCases {
         return AlphabetUseCases(
             getAlphabet = GetAlphabet(preferencesRepository),
             setAlphabet = SetAlphabet(preferencesRepository),
-            getLastSymbol = GetLastSymbol(preferencesRepository)
+            getLastSymbol = GetLastSymbol(preferencesRepository),
+            getAlphabetSymbolsSet = GetAlphabetSymbolsSet(application)
         )
     }
 }
