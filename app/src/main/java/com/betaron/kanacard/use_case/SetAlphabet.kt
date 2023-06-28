@@ -2,7 +2,7 @@ package com.betaron.kanacard.use_case
 
 import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
 import com.betaron.kanacard.extensions.toEnum
-import com.kanacard.application.Alphabet
+import com.betaron.kanacard.application.Alphabet
 
 class SetAlphabet (
     private val preferencesRepository : PreferencesRepository

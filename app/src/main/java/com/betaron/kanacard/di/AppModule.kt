@@ -14,7 +14,10 @@ import com.betaron.kanacard.use_case.GetAlphabet
 import com.betaron.kanacard.use_case.GetAlphabetSymbolsSet
 import com.betaron.kanacard.use_case.GetLastSymbol
 import com.betaron.kanacard.use_case.SetAlphabet
-import com.kanacard.application.Preferences
+import com.betaron.kanacard.application.Preferences
+import com.betaron.kanacard.use_case.GetSelectedSymbols
+import com.betaron.kanacard.use_case.SelectRandomSymbol
+import com.betaron.kanacard.use_case.SetLastSymbol
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,17 +30,17 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun providePreferencesDataStore(@ApplicationContext context: Context) : DataStore<Preferences> {
-        return  DataStoreFactory.create(
+    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return DataStoreFactory.create(
             serializer = PreferencesSerializer,
-            produceFile = { context.dataStoreFile(DATA_STORE_FILE_NAME)},
+            produceFile = { context.dataStoreFile(DATA_STORE_FILE_NAME) },
             corruptionHandler = null
         )
     }
 
     @Provides
     @Singleton
-    fun providePreferencesRepository(dataStore: DataStore<Preferences>) : PreferencesRepository {
+    fun providePreferencesRepository(dataStore: DataStore<Preferences>): PreferencesRepository {
         return PreferencesRepositoryImpl(dataStore)
     }
 
@@ -46,12 +49,15 @@ object AppModule {
     fun providesAlphabetUseCases(
         application: Application,
         preferencesRepository: PreferencesRepository
-    ) : AlphabetUseCases {
+    ): AlphabetUseCases {
         return AlphabetUseCases(
             getAlphabet = GetAlphabet(preferencesRepository),
             setAlphabet = SetAlphabet(preferencesRepository),
             getLastSymbol = GetLastSymbol(preferencesRepository),
-            getAlphabetSymbolsSet = GetAlphabetSymbolsSet(application)
+            getAlphabetSymbolsSet = GetAlphabetSymbolsSet(application),
+            getSelectedSymbols = GetSelectedSymbols(preferencesRepository),
+            setLastSymbol = SetLastSymbol(preferencesRepository),
+            selectRandomSymbol = SelectRandomSymbol()
         )
     }
 }

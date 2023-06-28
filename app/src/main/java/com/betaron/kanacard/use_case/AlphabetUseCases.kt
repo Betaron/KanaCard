@@ -4,5 +4,8 @@ data class AlphabetUseCases(
     val getAlphabet: GetAlphabet,
     val setAlphabet: SetAlphabet,
     val getLastSymbol: GetLastSymbol,
-    val getAlphabetSymbolsSet : GetAlphabetSymbolsSet
+    val getAlphabetSymbolsSet: GetAlphabetSymbolsSet,
+    val setLastSymbol: SetLastSymbol,
+    val getSelectedSymbols: GetSelectedSymbols,
+    val selectRandomSymbol: SelectRandomSymbol
 )

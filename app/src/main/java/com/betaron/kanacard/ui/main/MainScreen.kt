@@ -5,8 +5,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.betaron.kanacard.ui.main.components.SegmentedButton
@@ -16,7 +14,6 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    val scope = rememberCoroutineScope()
     val alphabets = listOf(
         "Hiragana",
         "Katakana"

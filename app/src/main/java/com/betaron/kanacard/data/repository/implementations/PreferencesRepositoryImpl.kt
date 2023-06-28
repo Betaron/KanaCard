@@ -3,8 +3,8 @@ package com.betaron.kanacard.data.repository.implementations
 import android.util.Log
 import androidx.datastore.core.DataStore
 import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
-import com.kanacard.application.Alphabet
-import com.kanacard.application.Preferences
+import com.betaron.kanacard.application.Alphabet
+import com.betaron.kanacard.application.Preferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -24,32 +24,43 @@ class PreferencesRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun setAlphabet(alphabet : Alphabet) {
-        dataStore.updateData { preferences ->
-            preferences.toBuilder().setAlphabet(alphabet).build()
-        }
-    }
-
-    override suspend fun getCurrentAlphabet(): Alphabet {
+    override suspend fun getAlphabet(): Alphabet {
         return preferencesFlow.first().alphabet
     }
 
-    override fun getSelected(): List<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun setAlphabet(alphabet: Alphabet) {
+        dataStore.updateData { preferences ->
+            preferences
+                .toBuilder()
+                .setAlphabet(alphabet)
+                .build()
+        }
     }
 
-    override fun setSelected(indexes: List<Boolean>) {
-        TODO("Not yet implemented")
+    override suspend fun getSelected(): List<Int> {
+        return preferencesFlow.first().selectedList
+    }
+
+    override suspend fun setSelected(indexes: List<Int>) {
+        dataStore.updateData { preferences ->
+            preferences
+                .toBuilder()
+                .clearSelected()
+                .addAllSelected(indexes)
+                .build()
+        }
     }
 
     override suspend fun getLastSymbol(): Int {
-        return  preferencesFlow.first().lastSymbolIndex
+        return preferencesFlow.first().lastSymbolIndex
     }
 
     override suspend fun setLastSymbol(index: Int) {
         dataStore.updateData { preferences ->
-            preferences.toBuilder().setLastSymbolIndex(index).build()
+            preferences
+                .toBuilder()
+                .setLastSymbolIndex(index)
+                .build()
         }
     }
-
 }

@@ -1,12 +1,11 @@
 package com.betaron.kanacard.use_case
 
 import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
-import com.betaron.kanacard.extensions.toInt
 
-class GetAlphabet(
+class SetLastSymbol(
     private val preferencesRepository: PreferencesRepository
 ) {
-  suspend operator fun invoke() : Int {
-      return  preferencesRepository.getAlphabet().toInt()
-  }
+    suspend operator fun invoke(symbolIndex: Int) {
+        preferencesRepository.setLastSymbol(symbolIndex)
+    }
 }
