@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.betaron.kanacard.use_case.AlphabetUseCases
+import com.betaron.kanacard.use_case.UtilUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val alphabetUseCases: AlphabetUseCases
+    private val alphabetUseCases: AlphabetUseCases,
+    private val utilUseCases: UtilUseCases
 ) : ViewModel() {
     private val _state = mutableStateOf(MainState())
     val state: State<MainState> = _state
@@ -46,6 +48,11 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         answer = event.text
                     )
+                else
+                    Toast.makeText(event.context, "length", Toast.LENGTH_SHORT).show()
+
+                if (!utilUseCases.validateLanguage(event.text))
+                    Toast.makeText(event.context, "language", Toast.LENGTH_SHORT).show()
             }
 
             is MainEvent.CheckAnswer -> {

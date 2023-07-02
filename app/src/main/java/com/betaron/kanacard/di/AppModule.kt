@@ -6,19 +6,21 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import com.betaron.kanacard.Constants.DATA_STORE_FILE_NAME
+import com.betaron.kanacard.application.Preferences
 import com.betaron.kanacard.data.repository.implementations.PreferencesRepositoryImpl
 import com.betaron.kanacard.data.repository.interfaces.PreferencesRepository
 import com.betaron.kanacard.data.serializer.PreferencesSerializer
 import com.betaron.kanacard.use_case.AlphabetUseCases
+import com.betaron.kanacard.use_case.CheckAnswer
 import com.betaron.kanacard.use_case.GetAlphabet
 import com.betaron.kanacard.use_case.GetAlphabetSymbolsSet
 import com.betaron.kanacard.use_case.GetLastSymbol
-import com.betaron.kanacard.use_case.SetAlphabet
-import com.betaron.kanacard.application.Preferences
-import com.betaron.kanacard.use_case.CheckAnswer
 import com.betaron.kanacard.use_case.GetSelectedSymbols
 import com.betaron.kanacard.use_case.SelectRandomSymbol
+import com.betaron.kanacard.use_case.SetAlphabet
 import com.betaron.kanacard.use_case.SetLastSymbol
+import com.betaron.kanacard.use_case.UtilUseCases
+import com.betaron.kanacard.use_case.ValidateLanguage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,6 +62,16 @@ object AppModule {
             setLastSymbol = SetLastSymbol(preferencesRepository),
             selectRandomSymbol = SelectRandomSymbol(),
             checkAnswer = CheckAnswer(application)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideUtlUseCases(
+        application: Application
+    ): UtilUseCases {
+        return UtilUseCases(
+            validateLanguage = ValidateLanguage(application)
         )
     }
 }

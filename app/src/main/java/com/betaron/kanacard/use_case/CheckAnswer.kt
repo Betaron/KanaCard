@@ -2,7 +2,6 @@ package com.betaron.kanacard.use_case
 
 import android.app.Application
 import com.betaron.kanacard.R
-import com.betaron.kanacard.application.Alphabet
 
 class CheckAnswer(
     application: Application
