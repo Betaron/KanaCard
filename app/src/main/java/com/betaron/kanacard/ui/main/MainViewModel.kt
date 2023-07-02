@@ -1,5 +1,6 @@
 package com.betaron.kanacard.ui.main
 
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,13 @@ class MainViewModel @Inject constructor(
                 viewModelScope.launch {
                     alphabetUseCases.setLastSymbol(state.value.currentSymbolIndex)
                 }
+            }
+
+            is MainEvent.EnteredAnswer -> {
+                if (event.text.length <= 3)
+                    _state.value = state.value.copy(
+                        answer = event.text
+                    )
             }
         }
     }

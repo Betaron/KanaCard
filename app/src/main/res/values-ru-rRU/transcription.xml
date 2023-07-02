@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="values">
+        <item>а</item>
+        <item>и</item>
+        <item>у</item>
+        <item>э</item>
+        <item>о</item>
+    </string-array>
+</resources>
