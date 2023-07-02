@@ -15,6 +15,7 @@ import com.betaron.kanacard.use_case.GetAlphabetSymbolsSet
 import com.betaron.kanacard.use_case.GetLastSymbol
 import com.betaron.kanacard.use_case.SetAlphabet
 import com.betaron.kanacard.application.Preferences
+import com.betaron.kanacard.use_case.CheckAnswer
 import com.betaron.kanacard.use_case.GetSelectedSymbols
 import com.betaron.kanacard.use_case.SelectRandomSymbol
 import com.betaron.kanacard.use_case.SetLastSymbol
@@ -57,7 +58,8 @@ object AppModule {
             getAlphabetSymbolsSet = GetAlphabetSymbolsSet(application),
             getSelectedSymbols = GetSelectedSymbols(preferencesRepository),
             setLastSymbol = SetLastSymbol(preferencesRepository),
-            selectRandomSymbol = SelectRandomSymbol()
+            selectRandomSymbol = SelectRandomSymbol(),
+            checkAnswer = CheckAnswer(application)
         )
     }
 }

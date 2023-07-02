@@ -1,6 +1,5 @@
 package com.betaron.kanacard.ui.main
 
-import android.R
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
@@ -10,7 +9,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.betaron.kanacard.ui.main.components.SegmentedButton
 
@@ -41,7 +39,7 @@ fun MainScreen(
         Row {
             Button(
                 onClick = {
-                    viewModel.onEvent(MainEvent.PickNewSymbol)
+                    viewModel.onEvent(MainEvent.SkipSymbol)
                 }) {
                 Text(text = "skip")
             }
@@ -53,6 +51,12 @@ fun MainScreen(
                 label = { Text("Answer") },
                 singleLine = true
             )
+            Button(
+                onClick = {
+                    viewModel.onEvent(MainEvent.CheckAnswer)
+                }) {
+                Text(text = "check")
+            }
         }
     }
 }

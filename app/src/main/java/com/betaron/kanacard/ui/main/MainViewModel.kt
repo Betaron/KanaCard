@@ -37,19 +37,8 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            is MainEvent.PickNewSymbol -> {
-                val randomIndex = alphabetUseCases.selectRandomSymbol(
-                    state.value.selectedSymbols,
-                    state.value.currentSymbolIndex
-                )
-
-                _state.value = state.value.copy(
-                    currentSymbolIndex = randomIndex
-                )
-
-                viewModelScope.launch {
-                    alphabetUseCases.setLastSymbol(state.value.currentSymbolIndex)
-                }
+            is MainEvent.SkipSymbol -> {
+                pickNewSymbol()
             }
 
             is MainEvent.EnteredAnswer -> {
@@ -57,6 +46,14 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         answer = event.text
                     )
+            }
+
+            is MainEvent.CheckAnswer -> {
+                val isCorrect = alphabetUseCases.checkAnswer(
+                    state.value.answer, state.value.currentSymbolIndex
+                )
+
+                if (isCorrect) pickNewSymbol()
             }
         }
     }
@@ -71,6 +68,21 @@ class MainViewModel @Inject constructor(
                 currentSymbolIndex = lastSymbolIndex,
                 selectedSymbols = alphabetUseCases.getSelectedSymbols()
             )
+        }
+    }
+
+    private fun pickNewSymbol() {
+        val randomIndex = alphabetUseCases.selectRandomSymbol(
+            state.value.selectedSymbols,
+            state.value.currentSymbolIndex
+        )
+
+        _state.value = state.value.copy(
+            currentSymbolIndex = randomIndex
+        )
+
+        viewModelScope.launch {
+            alphabetUseCases.setLastSymbol(state.value.currentSymbolIndex)
         }
     }
 }
