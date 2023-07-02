@@ -26,6 +26,7 @@ import androidx.compose.ui.zIndex
 @Composable
 fun SegmentedButton(
     items: List<String>,
+    modifier: Modifier = Modifier,
     defaultSelectedItemIndex: Int = 0,
     useFixedWidth: Boolean = false,
     itemWidth: Dp = 120.dp,
@@ -35,7 +36,7 @@ fun SegmentedButton(
     val selectedIndex = remember { mutableStateOf(defaultSelectedItemIndex) }
 
     Row(
-        modifier = Modifier
+        modifier = modifier
     ) {
         items.forEachIndexed { index, item ->
             OutlinedButton(

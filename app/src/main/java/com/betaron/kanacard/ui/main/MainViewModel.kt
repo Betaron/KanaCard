@@ -1,6 +1,5 @@
 package com.betaron.kanacard.ui.main
 
-import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -48,11 +47,10 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         answer = event.text
                     )
-                else
-                    Toast.makeText(event.context, "length", Toast.LENGTH_SHORT).show()
 
-                if (!utilUseCases.validateLanguage(event.text))
-                    Toast.makeText(event.context, "language", Toast.LENGTH_SHORT).show()
+                _state.value = state.value.copy(
+                    answerInputError = !utilUseCases.validateLanguage(event.text)
+                )
             }
 
             is MainEvent.CheckAnswer -> {
@@ -60,7 +58,12 @@ class MainViewModel @Inject constructor(
                     state.value.answer, state.value.currentSymbolIndex
                 )
 
-                if (isCorrect) pickNewSymbol()
+                if (isCorrect){
+                    pickNewSymbol()
+                    _state.value = state.value.copy(
+                        answer = ""
+                    )
+                }
             }
         }
     }
