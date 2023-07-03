@@ -6,6 +6,47 @@
         <item>う</item>
         <item>え</item>
         <item>お</item>
+        <item>か</item>
+        <item>き</item>
+        <item>く</item>
+        <item>け</item>
+        <item>こ</item>
+        <item>さ</item>
+        <item>し</item>
+        <item>す</item>
+        <item>せ</item>
+        <item>そ</item>
+        <item>た</item>
+        <item>ち</item>
+        <item>つ</item>
+        <item>て</item>
+        <item>と</item>
+        <item>な</item>
+        <item>に</item>
+        <item>ぬ</item>
+        <item>ね</item>
+        <item>の</item>
+        <item>は</item>
+        <item>ひ</item>
+        <item>ふ</item>
+        <item>へ</item>
+        <item>ほ</item>
+        <item>ま</item>
+        <item>み</item>
+        <item>む</item>
+        <item>め</item>
+        <item>も</item>
+        <item>や</item>
+        <item>ゆ</item>
+        <item>よ</item>
+        <item>ら</item>
+        <item>り</item>
+        <item>る</item>
+        <item>れ</item>
+        <item>ろ</item>
+        <item>わ</item>
+        <item>を</item>
+        <item>ん</item>
     </string-array>
     <string-array name="katakana">
         <item>ア</item>
@@ -13,5 +54,46 @@
         <item>ウ</item>
         <item>エ</item>
         <item>オ</item>
+        <item>カ</item>
+        <item>キ</item>
+        <item>ク</item>
+        <item>ケ</item>
+        <item>コ</item>
+        <item>サ</item>
+        <item>シ</item>
+        <item>ス</item>
+        <item>セ</item>
+        <item>ソ</item>
+        <item>タ</item>
+        <item>チ</item>
+        <item>ツ</item>
+        <item>テ</item>
+        <item>ト</item>
+        <item>ナ</item>
+        <item>ニ</item>
+        <item>ヌ</item>
+        <item>ネ</item>
+        <item>ノ</item>
+        <item>ハ</item>
+        <item>ヒ</item>
+        <item>フ</item>
+        <item>ヘ</item>
+        <item>ホ</item>
+        <item>マ</item>
+        <item>ミ</item>
+        <item>ム</item>
+        <item>メ</item>
+        <item>モ</item>
+        <item>ヤ</item>
+        <item>ユ</item>
+        <item>ヨ</item>
+        <item>ラ</item>
+        <item>リ</item>
+        <item>ル</item>
+        <item>レ</item>
+        <item>ロ</item>
+        <item>ワ</item>
+        <item>ヲ</item>
+        <item>ン</item>
     </string-array>
 </resources>
