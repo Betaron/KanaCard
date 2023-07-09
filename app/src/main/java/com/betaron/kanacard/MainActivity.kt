@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import com.betaron.kanacard.ui.SoftInputAssist
 import com.betaron.kanacard.ui.main.MainScreen
 import com.betaron.kanacard.ui.theme.KanaCardTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        val softInputAssist = SoftInputAssist(findViewById(android.R.id.content))
+        softInputAssist.setUiWindowInsets()
+        softInputAssist.animateKeyboardDisplay()
+
         setContent {
             KanaCardTheme {
                 // A surface container using the 'background' color from the theme
