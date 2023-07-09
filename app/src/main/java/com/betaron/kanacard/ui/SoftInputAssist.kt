@@ -11,6 +11,8 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 
 class SoftInputAssist(private val view: View) {
+    var imeVisible: Boolean = false
+
     fun setUiWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val insets = windowInsets.getInsets(
@@ -27,6 +29,8 @@ class SoftInputAssist(private val view: View) {
                     )
                 }
             }
+
+            imeVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
 
             windowInsets
         }
@@ -49,6 +53,11 @@ class SoftInputAssist(private val view: View) {
                 }
 
                 return insets
+            }
+
+            override fun onEnd(animation: WindowInsetsAnimation) {
+                if (!imeVisible)
+                    view.clearFocus()
             }
         }
         view.setWindowInsetsAnimationCallback(cb)
