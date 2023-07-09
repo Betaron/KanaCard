@@ -76,7 +76,7 @@ fun MainScreen(
                 ) {
                     FilledTonalTextIconButton(
                         modifier = Modifier
-                            .padding(top = 4.dp, end = 32.dp),
+                            .padding(top = 4.dp, end = 32.dp, bottom = 8.dp),
                         text = "Skip",
                         imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
                         iconContentDescription = "Skip",
@@ -121,7 +121,7 @@ fun MainScreen(
 
                     FilledTonalTextIconButton(
                         modifier = Modifier
-                            .padding(top = 4.dp, start = 32.dp),
+                            .padding(top = 4.dp, start = 32.dp, bottom = 8.dp),
                         text = "Check",
                         imageVector = Icons.Outlined.KeyboardTab,
                         iconContentDescription = "Check",
