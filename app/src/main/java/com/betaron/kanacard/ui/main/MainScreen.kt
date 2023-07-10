@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.KeyboardTab
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -22,13 +23,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.betaron.kanacard.ui.main.components.AutoSizeText
 import com.betaron.kanacard.ui.main.components.FilledTonalTextIconButton
 import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
@@ -144,15 +147,28 @@ fun MainScreen(
                     .padding(32.dp)
                     .fillMaxSize()
             ) {
-                Text(
+                Box(
                     modifier = Modifier
-                        .padding(32.dp)
-                        .align(CenterHorizontally),
-                    text = state.alphabetSymbols[state.currentSymbolIndex],
-                    lineHeight = 32.sp,
-                    fontSize = 64.sp,
-                    fontFamily = notoSerifJpRegular
-                )
+                        .fillMaxSize(),
+                    contentAlignment = Center
+                ) {
+                    AutoSizeText(
+                        text = state.alphabetSymbols[state.currentSymbolIndex],
+                        style = LocalTextStyle.current.merge(
+                            TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false
+                                ),
+                                lineHeightStyle = LineHeightStyle(
+                                    alignment = LineHeightStyle.Alignment.Center,
+                                    trim = LineHeightStyle.Trim.Both
+                                ),
+                                letterSpacing = (-24).sp
+                            )
+                        ),
+                        fontFamily = notoSerifJpRegular
+                    )
+                }
             }
         }
     }

@@ -1,61 +1,75 @@
 package com.betaron.kanacard.ui.main.components
 
-import android.graphics.fonts.FontFamily
-import android.graphics.fonts.FontStyle
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.isUnspecified
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnitType
 
 @Composable
 fun AutoSizeText(
-    modifier: Modifier = Modifier,
     text: String,
-    style: TextStyle = LocalTextStyle.current,
-    color: Color = style.color
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    style: TextStyle = LocalTextStyle.current
 ) {
-    var resizedTextStyle by remember {
-        mutableStateOf(style)
-    }
-    var shouldDraw by remember {
-        mutableStateOf(false)
-    }
+    var scaledTextStyle by remember { mutableStateOf(style) }
 
-    val defaultFontSize = 1000.sp
+    val density = LocalContext.current.resources.displayMetrics.scaledDensity
 
     Text(
         text = text,
         color = color,
-        modifier = modifier.drawWithContent {
-            if (shouldDraw) {
-                drawContent()
-            }
-        },
+        maxLines = maxLines,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = fontFamily,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
         softWrap = false,
-        style = resizedTextStyle,
+        style = scaledTextStyle,
         onTextLayout = { result ->
-            if (result.didOverflowWidth) {
-                if (style.fontSize.isUnspecified) {
-                    resizedTextStyle = resizedTextStyle.copy(
-                        fontSize = defaultFontSize
-                    )
-                }
-                resizedTextStyle = resizedTextStyle.copy(
-                    fontSize = resizedTextStyle.fontSize * 0.95
+            val scaleByHeight =
+                result.layoutInput.constraints.maxHeight / density / 2
+            val scaleByWidth =
+                result.layoutInput.constraints.maxWidth / result.layoutInput.text.length / density
+            scaledTextStyle = scaledTextStyle.copy(
+                fontSize = TextUnit(
+                    if (scaleByHeight < scaleByWidth)
+                        scaleByHeight
+                    else
+                        scaleByWidth,
+                    TextUnitType.Sp
                 )
-            } else {
-                shouldDraw = true
-            }
-        }
+            )
+        },
+        modifier = modifier.drawWithContent { drawContent() }
     )
 }
