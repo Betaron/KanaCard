@@ -13,7 +13,6 @@ import com.betaron.kanacard.ui.main.MainScreen
 import com.betaron.kanacard.ui.theme.KanaCardTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainScreen(imeAssist = softInputAssist)
                 }
             }
         }

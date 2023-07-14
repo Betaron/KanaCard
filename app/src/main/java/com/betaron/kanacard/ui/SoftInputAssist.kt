@@ -12,6 +12,7 @@ import androidx.core.view.updateMargins
 
 class SoftInputAssist(private val view: View) {
     var imeVisible: Boolean = false
+    var imeHeight: Int = 0
 
     fun setUiWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
@@ -31,6 +32,9 @@ class SoftInputAssist(private val view: View) {
             }
 
             imeVisible = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
+            imeHeight = windowInsets.getInsets(
+                WindowInsetsCompat.Type.ime() or WindowInsetsCompat.Type.systemBars()
+            ).bottom
 
             windowInsets
         }
@@ -42,7 +46,7 @@ class SoftInputAssist(private val view: View) {
                 insets: WindowInsets,
                 runningAnimations: MutableList<WindowInsetsAnimation>
             ): WindowInsets {
-                val imeHeight = insets.getInsets(
+                imeHeight = insets.getInsets(
                     WindowInsetsCompat.Type.ime() or WindowInsetsCompat.Type.systemBars()
                 ).bottom
 
