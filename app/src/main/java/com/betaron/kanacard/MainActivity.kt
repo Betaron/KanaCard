@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.betaron.kanacard.ui.SoftInputAssist
+import com.betaron.kanacard.ui.InsetsManager
 import com.betaron.kanacard.ui.main.MainScreen
 import com.betaron.kanacard.ui.theme.KanaCardTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,10 +19,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        val softInputAssist = SoftInputAssist(findViewById(android.R.id.content))
-        softInputAssist.setUiWindowInsets()
-        softInputAssist.animateKeyboardDisplay()
+        val insetsManager = InsetsManager(findViewById(android.R.id.content))
+        insetsManager.setUiWindowInsets()
+        insetsManager.animateKeyboardDisplay()
 
         setContent {
             KanaCardTheme {
@@ -31,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(imeAssist = softInputAssist)
+                    MainScreen()
                 }
             }
         }

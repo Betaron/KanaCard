@@ -58,13 +58,15 @@ class MainViewModel @Inject constructor(
                     state.value.answer, state.value.currentSymbolIndex
                 )
 
-                if (isCorrect){
+                if (isCorrect) {
                     pickNewSymbol()
                     _state.value = state.value.copy(
                         answer = ""
                     )
                 }
             }
+
+            else -> {}
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -63,8 +64,8 @@ fun KanaCardTheme(
             window.decorView.rootView.setBackgroundColor(
                 colorScheme.surfaceColorAtElevation(1.dp).toArgb()
             );
-            window.statusBarColor = colorScheme.background.toArgb()
-            window.navigationBarColor = colorScheme.surfaceColorAtElevation(1.dp).toArgb()
+            window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
             window.isStatusBarContrastEnforced = false
 
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme

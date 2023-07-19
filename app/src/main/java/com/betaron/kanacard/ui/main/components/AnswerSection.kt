@@ -32,8 +32,7 @@ fun AnswerSection(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     Row(
-        modifier = modifier
-            .padding(bottom = 16.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.Top
     ) {
         FilledTonalTextIconButton(
