@@ -29,12 +29,14 @@ fun SymbolsTable(
         items(ids.toTypedArray()){ id ->
             ToggleButton(
                 modifier = Modifier
-                    .padding(8.dp),
+                    .padding(8.dp, top = 0.dp, bottom = 2.dp),
                 symbol = symbols[id],
                 transcription = transcriptions[id],
                 id = id,
                 checked = id in selected,
-                viewModel = viewModel)
+                viewModel = viewModel,
+                isStub = id == 0
+            )
         }
     }
 }

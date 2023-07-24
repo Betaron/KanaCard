@@ -141,7 +141,13 @@ fun MainScreen(
                     }
 
                     SymbolsTable(
-                        ids = (1..46).toList().toIntArray(),
+                        ids = intArrayOf(
+                            *((1..35).toList().toIntArray()),
+                            36, 0, 37, 0, 38,
+                            *((39..43).toList().toIntArray()),
+                            44, 0, 0, 0, 45,
+                            0, 0, 0, 0, 46
+                        ),
                         viewModel = viewModel
                     )
                 }

@@ -3,6 +3,7 @@ package com.betaron.kanacard.ui.main.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.FilledIconToggleButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -28,7 +30,8 @@ fun ToggleButton(
     transcription: String,
     id: Int,
     viewModel: MainViewModel,
-    checked: Boolean = false
+    checked: Boolean = false,
+    isStub: Boolean = false
 ) {
     var checkState by remember {
         mutableStateOf(checked)
@@ -41,10 +44,15 @@ fun ToggleButton(
         }
     }
 
+    val alpha = if (isStub) 0f else 1f
+    val enabled = !isStub
+
     FilledIconToggleButton(
-        modifier = modifier,
+        modifier = modifier
+            .alpha(alpha),
         checked = checkState,
-        onCheckedChange = rememberSwitchSymbol
+        onCheckedChange = rememberSwitchSymbol,
+        enabled = enabled
     ) {
         Row {
             Box(contentAlignment = Alignment.CenterEnd) {
@@ -62,7 +70,7 @@ fun ToggleButton(
                         )
                     ),
                     fontFamily = notoSerifJpRegular,
-                    fontSize = 20.sp,
+                    fontSize = 24.sp,
                     textAlign = TextAlign.End
                 )
             }
