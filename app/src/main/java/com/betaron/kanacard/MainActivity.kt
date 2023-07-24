@@ -20,8 +20,6 @@ class MainActivity : ComponentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val insetsManager = InsetsManager(findViewById(android.R.id.content))
-        insetsManager.setUiWindowInsets()
-        insetsManager.animateKeyboardDisplay()
 
         setContent {
             KanaCardTheme {
@@ -30,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainScreen(insetsManager = insetsManager)
                 }
             }
         }

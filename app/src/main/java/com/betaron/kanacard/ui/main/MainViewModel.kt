@@ -66,6 +66,25 @@ class MainViewModel @Inject constructor(
                 }
             }
 
+            is MainEvent.SwitchSymbol -> {
+                if (event.checked)
+                    _state.value.selectedSymbols.add(event.index)
+                else
+                    _state.value.selectedSymbols.remove(event.index)
+            }
+
+            is MainEvent.SaveSelected -> {
+                viewModelScope.launch {
+                    alphabetUseCases.setSelectedSymbols(_state.value.selectedSymbols)
+                }
+            }
+
+            is MainEvent.SwitchImeVisibility -> {
+                _state.value = state.value.copy(
+                    imeIsFullyState = event.state
+                )
+            }
+
             else -> {}
         }
     }
@@ -78,7 +97,7 @@ class MainViewModel @Inject constructor(
                 alphabet = alphabetIndex,
                 alphabetSymbols = alphabetUseCases.getAlphabetSymbolsSet(alphabetIndex),
                 currentSymbolIndex = lastSymbolIndex,
-                selectedSymbols = alphabetUseCases.getSelectedSymbols()
+                selectedSymbols = alphabetUseCases.getSelectedSymbols().toMutableList()
             )
         }
     }

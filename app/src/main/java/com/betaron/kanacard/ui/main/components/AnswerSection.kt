@@ -1,7 +1,7 @@
 package com.betaron.kanacard.ui.main.components
 
-import android.content.Context
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +27,6 @@ import com.betaron.kanacard.ui.main.MainViewModel
 @Composable
 fun AnswerSection(
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     Row(
@@ -37,7 +35,7 @@ fun AnswerSection(
     ) {
         FilledTonalTextIconButton(
             modifier = Modifier
-                .padding(top = 4.dp, end = 32.dp, bottom = 8.dp),
+                .padding(top = 4.dp, bottom = 8.dp),
             text = "Skip",
             imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
             iconContentDescription = "Skip",
@@ -46,10 +44,12 @@ fun AnswerSection(
             }
         )
 
+        Spacer(modifier = Modifier.width(32.dp))
+
         OutlinedTextField(
             value = viewModel.state.value.answer,
             onValueChange = {
-                viewModel.onEvent(MainEvent.EnteredAnswer(it, context))
+                viewModel.onEvent(MainEvent.EnteredAnswer(it))
             },
             label = { Text(text = "Answer") },
             singleLine = true,
@@ -80,9 +80,11 @@ fun AnswerSection(
             }
         )
 
+        Spacer(modifier = Modifier.width(32.dp))
+
         FilledTonalTextIconButton(
             modifier = Modifier
-                .padding(top = 4.dp, start = 32.dp, bottom = 8.dp),
+                .padding(top = 4.dp, bottom = 8.dp),
             text = "Check",
             imageVector = Icons.Outlined.KeyboardTab,
             iconContentDescription = "Check",

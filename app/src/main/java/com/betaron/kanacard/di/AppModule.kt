@@ -19,6 +19,7 @@ import com.betaron.kanacard.use_case.GetSelectedSymbols
 import com.betaron.kanacard.use_case.SelectRandomSymbol
 import com.betaron.kanacard.use_case.SetAlphabet
 import com.betaron.kanacard.use_case.SetLastSymbol
+import com.betaron.kanacard.use_case.SetSelectedSymbols
 import com.betaron.kanacard.use_case.UtilUseCases
 import com.betaron.kanacard.use_case.ValidateLanguage
 import dagger.Module
@@ -59,6 +60,7 @@ object AppModule {
             getLastSymbol = GetLastSymbol(preferencesRepository),
             getAlphabetSymbolsSet = GetAlphabetSymbolsSet(application),
             getSelectedSymbols = GetSelectedSymbols(preferencesRepository),
+            setSelectedSymbols = SetSelectedSymbols(preferencesRepository),
             setLastSymbol = SetLastSymbol(preferencesRepository),
             selectRandomSymbol = SelectRandomSymbol(),
             checkAnswer = CheckAnswer(application)

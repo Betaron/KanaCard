@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="hiragana">
+        <item> </item>
         <item>あ</item>
         <item>い</item>
         <item>う</item>
@@ -49,6 +50,7 @@
         <item>ん</item>
     </string-array>
     <string-array name="katakana">
+        <item> </item>
         <item>ア</item>
         <item>イ</item>
         <item>ウ</item>

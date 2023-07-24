@@ -61,9 +61,7 @@ fun KanaCardTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.decorView.rootView.setBackgroundColor(
-                colorScheme.surfaceColorAtElevation(1.dp).toArgb()
-            );
+            window.decorView.rootView.setBackgroundColor(colorScheme.background.toArgb());
             window.statusBarColor = Color.Transparent.toArgb()
             window.navigationBarColor = Color.Transparent.toArgb()
             window.isStatusBarContrastEnforced = false

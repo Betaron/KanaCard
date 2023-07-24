@@ -9,7 +9,7 @@ class GetSelectedSymbols(
         var selectedSymbols = preferencesRepository.getSelected()
 
         if (selectedSymbols.isEmpty()) {
-            selectedSymbols = (0..45).toList()
+            selectedSymbols = (1..5).toList()
             preferencesRepository.setSelected(selectedSymbols)
         }
 

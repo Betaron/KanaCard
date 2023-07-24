@@ -6,6 +6,7 @@ class GetLastSymbol(
     private val preferencesRepository: PreferencesRepository
 ) {
     suspend operator fun invoke(): Int {
-        return preferencesRepository.getLastSymbol()
+        val lastSymbol = preferencesRepository.getLastSymbol()
+        return if (lastSymbol == 0) 1 else lastSymbol
     }
 }
