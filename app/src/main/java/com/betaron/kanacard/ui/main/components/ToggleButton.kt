@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,13 +34,8 @@ fun ToggleButton(
     checked: Boolean = false,
     isStub: Boolean = false
 ) {
-    var checkState by remember {
-        mutableStateOf(checked)
-    }
-
     val rememberSwitchSymbol: (checked: Boolean) -> Unit = remember {
         {
-            checkState = !checkState
             viewModel.onEvent(MainEvent.SwitchSymbol(it, id))
         }
     }
@@ -50,7 +46,7 @@ fun ToggleButton(
     FilledIconToggleButton(
         modifier = modifier
             .alpha(alpha),
-        checked = checkState,
+        checked = viewModel.state.value.selectedSymbols.contains(id),
         onCheckedChange = rememberSwitchSymbol,
         enabled = enabled
     ) {

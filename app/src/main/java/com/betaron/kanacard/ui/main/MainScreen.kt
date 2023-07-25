@@ -55,6 +55,7 @@ import com.betaron.kanacard.ui.main.components.AnswerSection
 import com.betaron.kanacard.ui.main.components.AutoSizeText
 import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.main.components.SymbolsTable
+import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
 import kotlinx.coroutines.launch
 
@@ -81,12 +82,24 @@ fun MainScreen(
         "Katakana"
     )
 
-    val tableSymbols = remember {
+    val monographs = remember {
         (1..35).toList() +
                 listOf(36, 0, 37, 0, 38) +
                 (39..43).toList() +
                 listOf(44, 0, 0, 0, 45) +
                 listOf(0, 0, 0, 0, 46)
+    }
+
+    val monographsWithDiacritics = remember {
+        (47..71).toList()
+    }
+
+    val digraphs = remember {
+        (72..92).toList()
+    }
+
+    val digraphsWithDiacritics = remember {
+        (93..107).toList()
     }
 
     val systemBarsPaddings = with(localDensity) {
@@ -156,10 +169,18 @@ fun MainScreen(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
                     ) {
+                        TableHeader(
+                            modifier = Modifier
+                                .align(CenterHorizontally),
+                            title = "Monographs",
+                            tableItemsIds = monographs,
+                            viewModel = viewModel
+                        )
+
                         SymbolsTable(
                             modifier = Modifier
                                 .height(550.dp),
-                            ids = tableSymbols,
+                            ids = monographs,
                             columns = 5,
                             viewModel = viewModel
                         )
@@ -167,13 +188,21 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp, )
+                                .padding(8.dp,)
+                        )
+
+                        TableHeader(
+                            modifier = Modifier
+                                .align(CenterHorizontally),
+                            title = "Monographs with diacritics",
+                            tableItemsIds = monographsWithDiacritics,
+                            viewModel = viewModel
                         )
 
                         SymbolsTable(
                             modifier = Modifier
                                 .height(250.dp),
-                            ids = (47..72).toList(),
+                            ids = monographsWithDiacritics,
                             columns = 5,
                             viewModel = viewModel
                         )
@@ -181,13 +210,21 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp, )
+                                .padding(8.dp,)
+                        )
+
+                        TableHeader(
+                            modifier = Modifier
+                                .align(CenterHorizontally),
+                            title = "Digraphs",
+                            tableItemsIds = digraphs,
+                            viewModel = viewModel
                         )
 
                         SymbolsTable(
                             modifier = Modifier
                                 .height(350.dp),
-                            ids = (72..93).toList(),
+                            ids = digraphs,
                             columns = 3,
                             viewModel = viewModel
                         )
@@ -195,14 +232,22 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp, )
+                                .padding(8.dp,)
+                        )
+
+                        TableHeader(
+                            modifier = Modifier
+                                .align(CenterHorizontally),
+                            title = "Digraphs with diacritics",
+                            tableItemsIds = digraphsWithDiacritics,
+                            viewModel = viewModel
                         )
 
                         SymbolsTable(
                             modifier = Modifier
                                 .padding(bottom = systemBarsPaddings.calculateBottomPadding())
                                 .height(250.dp),
-                            ids = (93..107).toList(),
+                            ids = digraphsWithDiacritics,
                             columns = 3,
                             viewModel = viewModel
                         )

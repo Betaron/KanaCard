@@ -68,9 +68,13 @@ class MainViewModel @Inject constructor(
 
             is MainEvent.SwitchSymbol -> {
                 if (event.checked)
-                    _state.value.selectedSymbols.add(event.index)
+                    _state.value = state.value.copy(
+                        selectedSymbols = state.value.selectedSymbols + event.index
+                    )
                 else
-                    _state.value.selectedSymbols.remove(event.index)
+                    _state.value = state.value.copy(
+                        selectedSymbols = state.value.selectedSymbols - event.index
+                    )
             }
 
             is MainEvent.SaveSelected -> {
@@ -83,6 +87,17 @@ class MainViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     imeIsFullyState = event.state
                 )
+            }
+
+            is MainEvent.SelectSymbolsGroup -> {
+                if (event.checked)
+                    _state.value = state.value.copy(
+                        selectedSymbols = (state.value.selectedSymbols + event.symbolsIds).distinct()
+                    )
+                else
+                    _state.value = state.value.copy(
+                        selectedSymbols = state.value.selectedSymbols - event.symbolsIds.toSet()
+                    )
             }
 
             else -> {}
