@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DynamicFeed
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -76,6 +80,14 @@ fun MainScreen(
         "Hiragana",
         "Katakana"
     )
+
+    val tableSymbols = remember {
+        (1..35).toList() +
+                listOf(36, 0, 37, 0, 38) +
+                (39..43).toList() +
+                listOf(44, 0, 0, 0, 45) +
+                listOf(0, 0, 0, 0, 46)
+    }
 
     val systemBarsPaddings = with(localDensity) {
         PaddingValues(
@@ -140,16 +152,61 @@ fun MainScreen(
                         }
                     }
 
-                    SymbolsTable(
-                        ids = intArrayOf(
-                            *((1..35).toList().toIntArray()),
-                            36, 0, 37, 0, 38,
-                            *((39..43).toList().toIntArray()),
-                            44, 0, 0, 0, 45,
-                            0, 0, 0, 0, 46
-                        ),
-                        viewModel = viewModel
-                    )
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        SymbolsTable(
+                            modifier = Modifier
+                                .height(550.dp),
+                            ids = tableSymbols,
+                            columns = 5,
+                            viewModel = viewModel
+                        )
+
+                        Divider(
+                            modifier = Modifier
+                                .align(CenterHorizontally)
+                                .padding(8.dp, )
+                        )
+
+                        SymbolsTable(
+                            modifier = Modifier
+                                .height(250.dp),
+                            ids = (47..72).toList(),
+                            columns = 5,
+                            viewModel = viewModel
+                        )
+
+                        Divider(
+                            modifier = Modifier
+                                .align(CenterHorizontally)
+                                .padding(8.dp, )
+                        )
+
+                        SymbolsTable(
+                            modifier = Modifier
+                                .height(350.dp),
+                            ids = (72..93).toList(),
+                            columns = 3,
+                            viewModel = viewModel
+                        )
+
+                        Divider(
+                            modifier = Modifier
+                                .align(CenterHorizontally)
+                                .padding(8.dp, )
+                        )
+
+                        SymbolsTable(
+                            modifier = Modifier
+                                .padding(bottom = systemBarsPaddings.calculateBottomPadding())
+                                .height(250.dp),
+                            ids = (93..107).toList(),
+                            columns = 3,
+                            viewModel = viewModel
+                        )
+                    }
                 }
             }
         }

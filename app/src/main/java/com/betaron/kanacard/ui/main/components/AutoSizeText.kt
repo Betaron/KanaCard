@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -46,6 +45,7 @@ fun AutoSizeText(
 
     Text(
         text = text,
+        modifier = modifier,
         color = color,
         maxLines = maxLines,
         fontStyle = fontStyle,
@@ -59,7 +59,7 @@ fun AutoSizeText(
         softWrap = false,
         style = scaledTextStyle,
         onTextLayout = { result ->
-            val length = 
+            val length =
                 if (result.layoutInput.text.isNotEmpty()) result.layoutInput.text.length
                 else 1
             val scaleByHeight = result.layoutInput.constraints.maxHeight / 2
@@ -80,6 +80,5 @@ fun AutoSizeText(
                 fontSize = fontSize
             )
         },
-        modifier = modifier.drawWithContent { drawContent() }
     )
 }

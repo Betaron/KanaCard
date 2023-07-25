@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
@@ -15,7 +14,8 @@ import com.betaron.kanacard.ui.main.MainViewModel
 @Composable
 fun SymbolsTable(
     modifier: Modifier = Modifier,
-    ids: IntArray,
+    ids: List<Int>,
+    columns: Int,
     viewModel: MainViewModel
 ) {
     val symbols = viewModel.state.value.alphabetSymbols
@@ -24,9 +24,10 @@ fun SymbolsTable(
 
     LazyVerticalGrid(
         modifier = modifier,
-        columns = GridCells.Fixed(count = 5)
-    ){
-        items(ids.toTypedArray()){ id ->
+        columns = GridCells.Fixed(columns),
+        userScrollEnabled = false
+    ) {
+        items(ids, contentType = { Int }) { id ->
             ToggleButton(
                 modifier = Modifier
                     .padding(8.dp, top = 0.dp, bottom = 2.dp),
