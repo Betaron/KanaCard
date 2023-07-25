@@ -44,12 +44,14 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.betaron.kanacard.R
 import com.betaron.kanacard.ui.InsetsManager
 import com.betaron.kanacard.ui.main.components.AnswerSection
 import com.betaron.kanacard.ui.main.components.AutoSizeText
@@ -78,8 +80,8 @@ fun MainScreen(
     )
     val state = viewModel.state.value
     val alphabets = listOf(
-        "Hiragana",
-        "Katakana"
+        stringResource(R.string.hira),
+        stringResource(R.string.kata)
     )
 
     val monographs = remember {
@@ -172,7 +174,7 @@ fun MainScreen(
                         TableHeader(
                             modifier = Modifier
                                 .align(CenterHorizontally),
-                            title = "Monographs",
+                            title = stringResource(R.string.monographs),
                             tableItemsIds = monographs,
                             viewModel = viewModel
                         )
@@ -194,7 +196,7 @@ fun MainScreen(
                         TableHeader(
                             modifier = Modifier
                                 .align(CenterHorizontally),
-                            title = "Monographs with diacritics",
+                            title = stringResource(R.string.monographs_with_diacritics),
                             tableItemsIds = monographsWithDiacritics,
                             viewModel = viewModel
                         )
@@ -216,7 +218,7 @@ fun MainScreen(
                         TableHeader(
                             modifier = Modifier
                                 .align(CenterHorizontally),
-                            title = "Digraphs",
+                            title = stringResource(R.string.digraphs),
                             tableItemsIds = digraphs,
                             viewModel = viewModel
                         )
@@ -238,7 +240,7 @@ fun MainScreen(
                         TableHeader(
                             modifier = Modifier
                                 .align(CenterHorizontally),
-                            title = "Digraphs with diacritics",
+                            title = stringResource(R.string.digraphs_with_diacritics),
                             tableItemsIds = digraphsWithDiacritics,
                             viewModel = viewModel
                         )

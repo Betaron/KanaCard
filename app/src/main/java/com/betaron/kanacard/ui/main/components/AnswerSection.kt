@@ -17,10 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.betaron.kanacard.R
 import com.betaron.kanacard.ui.main.MainEvent
 import com.betaron.kanacard.ui.main.MainViewModel
 
@@ -36,7 +38,7 @@ fun AnswerSection(
         FilledTonalTextIconButton(
             modifier = Modifier
                 .padding(top = 4.dp, bottom = 8.dp),
-            text = "Skip",
+            text = stringResource(R.string.skip),
             imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
             iconContentDescription = "Skip",
             onClick = {
@@ -51,7 +53,7 @@ fun AnswerSection(
             onValueChange = {
                 viewModel.onEvent(MainEvent.EnteredAnswer(it))
             },
-            label = { Text(text = "Answer") },
+            label = { Text(text = stringResource(R.string.answer)) },
             singleLine = true,
             textStyle = TextStyle(
                 fontSize = 18.sp
@@ -65,7 +67,7 @@ fun AnswerSection(
                 if (viewModel.state.value.answerInputError) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Incorrect language",
+                        text = stringResource(R.string.input_error),
                         color = MaterialTheme.colorScheme.error
                     )
                 }
@@ -85,7 +87,7 @@ fun AnswerSection(
         FilledTonalTextIconButton(
             modifier = Modifier
                 .padding(top = 4.dp, bottom = 8.dp),
-            text = "Check",
+            text = stringResource(R.string.check),
             imageVector = Icons.Outlined.KeyboardTab,
             iconContentDescription = "Check",
             onClick = {

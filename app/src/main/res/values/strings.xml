@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name" translatable="false">KanaCard</string>
+    <string name="hira">Hiragana</string>
+    <string name="kata">Katakana</string>
+    <string name="answer">Answer</string>
+    <string name="skip">Skip</string>
+    <string name="check">Check</string>
+    <string name="input_error">Invalid input</string>
+    <string name="monographs">Monographs</string>
+    <string name="monographs_with_diacritics">Monographs with diacritics</string>
+    <string name="digraphs">Digraphs</string>
+    <string name="digraphs_with_diacritics">Digraphs with diacritics</string>
 </resources>

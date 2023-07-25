@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hira">Хирагана</string>
+    <string name="kata">Катакана</string>
+    <string name="answer">Ответ</string>
+    <string name="skip">Пропустить</string>
+    <string name="check">Проверить</string>
+    <string name="input_error">Неверный ввод</string>
+    <string name="monographs">Одиночные</string>
+    <string name="monographs_with_diacritics">Одиночные с диакритическим знаком</string>
+    <string name="digraphs">Двойные</string>
+    <string name="digraphs_with_diacritics">Двойные с диакритическим знаком</string>
+</resources>
