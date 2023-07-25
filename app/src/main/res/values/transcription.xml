@@ -48,5 +48,66 @@
         <item>wa</item>
         <item>wo</item>
         <item>n</item>
+        <item>ga</item>
+        <item>gi</item>
+        <item>gu</item>
+        <item>ge</item>
+        <item>go</item>
+        <item>za</item>
+        <item>ji</item>
+        <item>zu</item>
+        <item>ze</item>
+        <item>zo</item>
+        <item>da</item>
+        <item>ji</item>
+        <item>zu</item>
+        <item>de</item>
+        <item>do</item>
+        <item>ba</item>
+        <item>bi</item>
+        <item>bu</item>
+        <item>be</item>
+        <item>bo</item>
+        <item>pa</item>
+        <item>pi</item>
+        <item>pu</item>
+        <item>pe</item>
+        <item>po</item>
+        <item>kya</item>
+        <item>kyu</item>
+        <item>kyo</item>
+        <item>sha</item>
+        <item>shu</item>
+        <item>sho</item>
+        <item>cha</item>
+        <item>chu</item>
+        <item>cho</item>
+        <item>nya</item>
+        <item>nyu</item>
+        <item>nyo</item>
+        <item>hya</item>
+        <item>hyu</item>
+        <item>hyo</item>
+        <item>mya</item>
+        <item>myu</item>
+        <item>myo</item>
+        <item>rya</item>
+        <item>ryu</item>
+        <item>ryo</item>
+        <item>gya</item>
+        <item>gyu</item>
+        <item>gyo</item>
+        <item>ja</item>
+        <item>ju</item>
+        <item>jo</item>
+        <item>ja</item>
+        <item>ju</item>
+        <item>jo</item>
+        <item>bya</item>
+        <item>byu</item>
+        <item>byo</item>
+        <item>pya</item>
+        <item>pyu</item>
+        <item>pyo</item>
     </string-array>
 </resources>
