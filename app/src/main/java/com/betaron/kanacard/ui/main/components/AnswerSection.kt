@@ -29,7 +29,9 @@ import com.betaron.kanacard.ui.main.MainViewModel
 @Composable
 fun AnswerSection(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    onSkipClick: () -> Unit,
+    onCheckClick: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -41,9 +43,7 @@ fun AnswerSection(
             text = stringResource(R.string.skip),
             imageVector = Icons.Outlined.KeyboardDoubleArrowRight,
             iconContentDescription = "Skip",
-            onClick = {
-                viewModel.onEvent(MainEvent.SkipSymbol)
-            }
+            onClick = onSkipClick
         )
 
         Spacer(modifier = Modifier.width(32.dp))
@@ -90,9 +90,7 @@ fun AnswerSection(
             text = stringResource(R.string.check),
             imageVector = Icons.Outlined.KeyboardTab,
             iconContentDescription = "Check",
-            onClick = {
-                viewModel.onEvent(MainEvent.CheckAnswer)
-            }
+            onClick = onCheckClick
         )
     }
 }

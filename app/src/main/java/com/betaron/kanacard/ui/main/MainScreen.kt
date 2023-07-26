@@ -1,5 +1,11 @@
 package com.betaron.kanacard.ui.main
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
@@ -32,7 +39,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -40,10 +46,12 @@ import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -59,6 +67,7 @@ import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.main.components.SymbolsTable
 import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -110,6 +119,28 @@ fun MainScreen(
             bottom = WindowInsets.systemBars.getBottom(localDensity).toDp()
         )
     }
+
+    fun Modifier.shake(enabled: Boolean) = composed(
+        factory = {
+            val infiniteTransition = rememberInfiniteTransition()
+            val shake by infiniteTransition.animateFloat(
+                initialValue = -16f,
+                targetValue = 16f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(30, easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse
+                )
+            )
+
+            Modifier.offset(
+                x = if (enabled) shake.dp else 0.dp
+            )
+        },
+        inspectorInfo = debugInspectorInfo {
+            name = "shake"
+            properties["enabled"] = enabled
+        }
+    )
 
     insetsManager.setUiWindowInsets(viewModel)
 
@@ -175,7 +206,7 @@ fun MainScreen(
                             modifier = Modifier
                                 .align(CenterHorizontally),
                             title = stringResource(R.string.monographs),
-                            tableItemsIds = monographs,
+                            tableItemsIds = monographs.distinct() - 0,
                             viewModel = viewModel
                         )
 
@@ -190,7 +221,7 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp,)
+                                .padding(8.dp)
                         )
 
                         TableHeader(
@@ -212,7 +243,7 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp,)
+                                .padding(8.dp)
                         )
 
                         TableHeader(
@@ -234,7 +265,7 @@ fun MainScreen(
                         Divider(
                             modifier = Modifier
                                 .align(CenterHorizontally)
-                                .padding(8.dp,)
+                                .padding(8.dp)
                         )
 
                         TableHeader(
@@ -272,17 +303,22 @@ fun MainScreen(
                         }
                     }
             ) {
-                Box(
+                LaunchedEffect(state.isCardShake) {
+                    if (state.isCardShake) {
+                        delay(300)
+                        viewModel.onEvent(MainEvent.SetShakeState(false))
+                    }
+                }
+
+                Card(
                     modifier = Modifier
-                        .weight(1f),
-                    contentAlignment = TopEnd
-                )
-                {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(24.dp)
-                    ) {
+                        .shake(state.isCardShake)
+                        .weight(1f)
+                        .fillMaxSize()
+                        .padding(24.dp)
+                ) {
+                    Box(contentAlignment = TopEnd)
+                    {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -305,22 +341,21 @@ fun MainScreen(
                                 fontFamily = notoSerifJpRegular
                             )
                         }
-                    }
-
-                    IconButton(
-                        modifier = Modifier
-                            .padding(48.dp),
-                        onClick = {
-                            scope.launch {
-                                scaffoldState.bottomSheetState.expand()
+                        IconButton(
+                            modifier = Modifier
+                                .padding(24.dp),
+                            onClick = {
+                                scope.launch {
+                                    scaffoldState.bottomSheetState.expand()
+                                }
+                                keyboardController?.hide()
                             }
-                            keyboardController?.hide()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.DynamicFeed,
+                                contentDescription = "Expand",
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.DynamicFeed,
-                            contentDescription = "Expand",
-                        )
                     }
                 }
 
@@ -339,7 +374,13 @@ fun MainScreen(
                                 .getBottom(localDensity)
                                 .toDp()
                         })
-                        .imePadding()
+                        .imePadding(),
+                    onSkipClick = {
+                        viewModel.onEvent(MainEvent.SkipSymbol)
+                    },
+                    onCheckClick = {
+                        viewModel.onEvent(MainEvent.CheckAnswer)
+                    }
                 )
             }
         }

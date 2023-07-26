@@ -63,7 +63,10 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         answer = ""
                     )
-                }
+                } else
+                    _state.value = state.value.copy(
+                        isCardShake = true
+                    )
             }
 
             is MainEvent.SwitchSymbol -> {
@@ -98,6 +101,12 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         selectedSymbols = state.value.selectedSymbols - event.symbolsIds.toSet()
                     )
+            }
+
+            is MainEvent.SetShakeState -> {
+                _state.value = state.value.copy(
+                    isCardShake = event.state
+                )
             }
 
             else -> {}

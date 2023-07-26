@@ -7,5 +7,6 @@ data class MainState(
     val selectedSymbols: List<Int> = listOf(),
     val answer: String = "",
     val answerInputError: Boolean = false,
-    val imeIsFullyState: Boolean = false
+    val imeIsFullyState: Boolean = false,
+    val isCardShake: Boolean = false
 )
