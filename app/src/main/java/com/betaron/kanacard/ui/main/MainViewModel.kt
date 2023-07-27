@@ -65,7 +65,7 @@ class MainViewModel @Inject constructor(
                     )
                 } else
                     _state.value = state.value.copy(
-                        isCardShake = true
+                        isCardShake = !state.value.isCardShake
                     )
             }
 

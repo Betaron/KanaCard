@@ -1,11 +1,9 @@
 package com.betaron.kanacard.ui.main
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.repeatable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -46,12 +44,10 @@ import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -67,7 +63,6 @@ import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.main.components.SymbolsTable
 import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -120,26 +115,17 @@ fun MainScreen(
         )
     }
 
-    fun Modifier.shake(enabled: Boolean) = composed(
-        factory = {
-            val infiniteTransition = rememberInfiniteTransition()
-            val shake by infiniteTransition.animateFloat(
-                initialValue = -16f,
-                targetValue = 16f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(30, easing = LinearEasing),
-                    repeatMode = RepeatMode.Reverse
-                )
-            )
-
-            Modifier.offset(
-                x = if (enabled) shake.dp else 0.dp
-            )
-        },
-        inspectorInfo = debugInspectorInfo {
-            name = "shake"
-            properties["enabled"] = enabled
-        }
+    val shake = animateDpAsState(
+        targetValue = if (state.isCardShake) 0.dp else 0.1.dp,
+        animationSpec = repeatable(
+            iterations = 8,
+            repeatMode = RepeatMode.Reverse,
+            animation = keyframes {
+                durationMillis = 30
+                (-16).dp at 10
+                16.dp at 20
+            }
+        )
     )
 
     insetsManager.setUiWindowInsets(viewModel)
@@ -303,16 +289,9 @@ fun MainScreen(
                         }
                     }
             ) {
-                LaunchedEffect(state.isCardShake) {
-                    if (state.isCardShake) {
-                        delay(300)
-                        viewModel.onEvent(MainEvent.SetShakeState(false))
-                    }
-                }
-
                 Card(
                     modifier = Modifier
-                        .shake(state.isCardShake)
+                        .offset(x = shake.value)
                         .weight(1f)
                         .fillMaxSize()
                         .padding(24.dp)
