@@ -1,9 +1,14 @@
 package com.betaron.kanacard.ui.main
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -44,6 +49,7 @@ import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -65,7 +71,9 @@ import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalAnimationApi::class
+)
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
@@ -289,51 +297,64 @@ fun MainScreen(
                         }
                     }
             ) {
-                Card(
+                Box(
                     modifier = Modifier
-                        .offset(x = shake.value)
                         .weight(1f)
-                        .fillMaxSize()
-                        .padding(24.dp)
-                ) {
-                    Box(contentAlignment = TopEnd)
-                    {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            contentAlignment = Center
-                        ) {
-                            AutoSizeText(
-                                text = state.alphabetSymbols[state.currentSymbolIndex],
-                                style = LocalTextStyle.current.merge(
-                                    TextStyle(
-                                        platformStyle = PlatformTextStyle(
-                                            includeFontPadding = false
-                                        ),
-                                        lineHeightStyle = LineHeightStyle(
-                                            alignment = LineHeightStyle.Alignment.Center,
-                                            trim = LineHeightStyle.Trim.Both
-                                        ),
-                                        letterSpacing = (-24).sp
-                                    )
-                                ),
-                                fontFamily = notoSerifJpRegular
-                            )
+                )
+                {
+                    AnimatedContent(
+                        targetState = state.currentSymbolIndex,
+                        transitionSpec = {
+                            slideInHorizontally { it } with slideOutHorizontally { -it }
                         }
-                        IconButton(
+                    ) { targetSymbolIndex ->
+                        Card(
                             modifier = Modifier
-                                .padding(24.dp),
-                            onClick = {
-                                scope.launch {
-                                    scaffoldState.bottomSheetState.expand()
-                                }
-                                keyboardController?.hide()
-                            }
+                                .offset(x = shake.value)
+                                .fillMaxSize()
+                                .padding(24.dp)
+                                .shadow(4.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.DynamicFeed,
-                                contentDescription = "Expand",
-                            )
+                            Box(contentAlignment = TopEnd)
+                            {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentAlignment = Center
+                                ) {
+                                    AutoSizeText(
+                                        text = state.alphabetSymbols[targetSymbolIndex],
+                                        style = LocalTextStyle.current.merge(
+                                            TextStyle(
+                                                platformStyle = PlatformTextStyle(
+                                                    includeFontPadding = false
+                                                ),
+                                                lineHeightStyle = LineHeightStyle(
+                                                    alignment = LineHeightStyle.Alignment.Center,
+                                                    trim = LineHeightStyle.Trim.Both
+                                                ),
+                                                letterSpacing = (-24).sp
+                                            )
+                                        ),
+                                        fontFamily = notoSerifJpRegular
+                                    )
+                                }
+                                IconButton(
+                                    modifier = Modifier
+                                        .padding(24.dp),
+                                    onClick = {
+                                        scope.launch {
+                                            scaffoldState.bottomSheetState.expand()
+                                        }
+                                        keyboardController?.hide()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.DynamicFeed,
+                                        contentDescription = "Expand",
+                                    )
+                                }
+                            }
                         }
                     }
                 }
