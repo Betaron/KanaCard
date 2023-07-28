@@ -1,20 +1,20 @@
 package com.betaron.kanacard.ui.main.components
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.FilledIconToggleButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -43,8 +43,14 @@ fun ToggleButton(
     val alpha = if (isStub) 0f else 1f
     val enabled = !isStub
 
+    val scale by animateFloatAsState(
+        targetValue = if (checked) 0.9f else 1f,
+        animationSpec = tween(100, easing = LinearEasing)
+    )
+
     FilledIconToggleButton(
         modifier = modifier
+            .scale(scale)
             .alpha(alpha),
         checked = viewModel.state.value.selectedSymbols.contains(id),
         onCheckedChange = rememberSwitchSymbol,
