@@ -34,9 +34,9 @@ fun ToggleButton(
     checked: Boolean = false,
     isStub: Boolean = false
 ) {
-    val rememberSwitchSymbol: (checked: Boolean) -> Unit = remember {
+    val rememberSelectSymbol: (checked: Boolean) -> Unit = remember {
         {
-            viewModel.onEvent(MainEvent.SwitchSymbol(it, id))
+            viewModel.onEvent(MainEvent.SelectSymbol(it, id))
         }
     }
 
@@ -53,7 +53,7 @@ fun ToggleButton(
             .scale(scale)
             .alpha(alpha),
         checked = viewModel.state.value.selectedSymbols.contains(id),
-        onCheckedChange = rememberSwitchSymbol,
+        onCheckedChange = rememberSelectSymbol,
         enabled = enabled
     ) {
         Row {

@@ -69,7 +69,7 @@ class MainViewModel @Inject constructor(
                     )
             }
 
-            is MainEvent.SwitchSymbol -> {
+            is MainEvent.SelectSymbol -> {
                 if (event.checked)
                     _state.value = state.value.copy(
                         selectedSymbols = state.value.selectedSymbols + event.index
@@ -101,6 +101,12 @@ class MainViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         selectedSymbols = state.value.selectedSymbols - event.symbolsIds.toSet()
                     )
+            }
+
+            is MainEvent.SetSelectedSymbols -> {
+                _state.value = state.value.copy(
+                    selectedSymbols = event.symbolsIds
+                )
             }
 
             is MainEvent.SetShakeState -> {
