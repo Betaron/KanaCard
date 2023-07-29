@@ -61,7 +61,7 @@ fun AnswerSection(
             modifier = Modifier
                 .width(150.dp),
             keyboardActions = KeyboardActions(onDone = {
-                viewModel.onEvent(MainEvent.CheckAnswer)
+                onCheckClick()
             }),
             supportingText = {
                 if (viewModel.state.value.answerInputError) {

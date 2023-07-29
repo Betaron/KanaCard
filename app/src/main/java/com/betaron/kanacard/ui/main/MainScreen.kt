@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DynamicFeed
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,11 +48,11 @@ import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -65,13 +64,17 @@ import com.betaron.kanacard.R
 import com.betaron.kanacard.ui.InsetsManager
 import com.betaron.kanacard.ui.main.components.AnswerSection
 import com.betaron.kanacard.ui.main.components.AutoSizeText
+import com.betaron.kanacard.ui.main.components.CardFace
+import com.betaron.kanacard.ui.main.components.FlipCard
+import com.betaron.kanacard.ui.main.components.RotationAxis
 import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.main.components.SymbolsTable
 import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
     ExperimentalAnimationApi::class
 )
 @Composable
@@ -91,6 +94,7 @@ fun MainScreen(
         )
     )
     val state = viewModel.state.value
+    val transcriptions = stringArrayResource(R.array.transcription)
     val alphabets = listOf(
         stringResource(R.string.hira),
         stringResource(R.string.kata)
@@ -135,6 +139,10 @@ fun MainScreen(
             }
         )
     )
+
+    var flipState by remember {
+        mutableStateOf(CardFace.Front)
+    }
 
     insetsManager.setUiWindowInsets(viewModel)
 
@@ -308,22 +316,66 @@ fun MainScreen(
                             slideInHorizontally { it } with slideOutHorizontally { -it }
                         }
                     ) { targetSymbolIndex ->
-                        Card(
+                        FlipCard(
                             modifier = Modifier
                                 .offset(x = shake.value)
                                 .fillMaxSize()
-                                .padding(24.dp)
-                                .shadow(4.dp)
-                        ) {
-                            Box(contentAlignment = TopEnd)
-                            {
+                                .padding(24.dp),
+                            cardFace = flipState,
+                            onClick = {
+                                flipState = it.next
+                            },
+                            axis = RotationAxis.AxisY,
+                            front = {
+                                Box(contentAlignment = TopEnd)
+                                {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        contentAlignment = Center
+                                    ) {
+                                        AutoSizeText(
+                                            text = state.alphabetSymbols[targetSymbolIndex],
+                                            style = LocalTextStyle.current.merge(
+                                                TextStyle(
+                                                    platformStyle = PlatformTextStyle(
+                                                        includeFontPadding = false
+                                                    ),
+                                                    lineHeightStyle = LineHeightStyle(
+                                                        alignment = LineHeightStyle.Alignment.Center,
+                                                        trim = LineHeightStyle.Trim.Both
+                                                    ),
+                                                    letterSpacing = (-24).sp
+                                                )
+                                            ),
+                                            fontFamily = notoSerifJpRegular
+                                        )
+                                    }
+                                    IconButton(
+                                        modifier = Modifier
+                                            .padding(24.dp),
+                                        onClick = {
+                                            scope.launch {
+                                                scaffoldState.bottomSheetState.expand()
+                                            }
+                                            keyboardController?.hide()
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.DynamicFeed,
+                                            contentDescription = "Expand",
+                                        )
+                                    }
+                                }
+                            },
+                            back = {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize(),
                                     contentAlignment = Center
                                 ) {
                                     AutoSizeText(
-                                        text = state.alphabetSymbols[targetSymbolIndex],
+                                        text = "[" + transcriptions[targetSymbolIndex] + "]",
                                         style = LocalTextStyle.current.merge(
                                             TextStyle(
                                                 platformStyle = PlatformTextStyle(
@@ -332,30 +384,13 @@ fun MainScreen(
                                                 lineHeightStyle = LineHeightStyle(
                                                     alignment = LineHeightStyle.Alignment.Center,
                                                     trim = LineHeightStyle.Trim.Both
-                                                ),
-                                                letterSpacing = (-24).sp
+                                                )
                                             )
-                                        ),
-                                        fontFamily = notoSerifJpRegular
-                                    )
-                                }
-                                IconButton(
-                                    modifier = Modifier
-                                        .padding(24.dp),
-                                    onClick = {
-                                        scope.launch {
-                                            scaffoldState.bottomSheetState.expand()
-                                        }
-                                        keyboardController?.hide()
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.DynamicFeed,
-                                        contentDescription = "Expand",
+                                        )
                                     )
                                 }
                             }
-                        }
+                        )
                     }
                 }
 
@@ -377,9 +412,11 @@ fun MainScreen(
                         .imePadding(),
                     onSkipClick = {
                         viewModel.onEvent(MainEvent.SkipSymbol)
+                        flipState = CardFace.Front
                     },
                     onCheckClick = {
                         viewModel.onEvent(MainEvent.CheckAnswer)
+                        flipState = CardFace.Front
                     }
                 )
             }
