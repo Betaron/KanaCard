@@ -1,5 +1,6 @@
 package com.betaron.kanacard.ui.main
 
+import android.view.SoundEffectConstants
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.RepeatMode
@@ -191,6 +192,7 @@ fun MainScreen(
                     {
                         IconButton(
                             onClick = {
+                                localView.playSoundEffect(SoundEffectConstants.CLICK)
                                 scope.launch {
                                     scaffoldState.bottomSheetState.hide()
                                 }
@@ -323,6 +325,7 @@ fun MainScreen(
                                 .padding(24.dp),
                             cardFace = flipState,
                             onClick = {
+                                localView.playSoundEffect(SoundEffectConstants.CLICK)
                                 flipState = it.next
                             },
                             axis = RotationAxis.AxisY,
@@ -355,6 +358,7 @@ fun MainScreen(
                                         modifier = Modifier
                                             .padding(24.dp),
                                         onClick = {
+                                            localView.playSoundEffect(SoundEffectConstants.CLICK)
                                             scope.launch {
                                                 scaffoldState.bottomSheetState.expand()
                                             }
@@ -411,10 +415,12 @@ fun MainScreen(
                         })
                         .imePadding(),
                     onSkipClick = {
+                        localView.playSoundEffect(SoundEffectConstants.CLICK)
                         viewModel.onEvent(MainEvent.SkipSymbol)
                         flipState = CardFace.Front
                     },
                     onCheckClick = {
+                        localView.playSoundEffect(SoundEffectConstants.CLICK)
                         viewModel.onEvent(MainEvent.CheckAnswer)
                         flipState = CardFace.Front
                     }

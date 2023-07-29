@@ -1,5 +1,6 @@
 package com.betaron.kanacard.ui.main.components
 
+import android.view.SoundEffectConstants
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -12,8 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.betaron.kanacard.ui.main.MainEvent
 import com.betaron.kanacard.ui.main.MainViewModel
 
@@ -24,6 +25,8 @@ fun TableHeader(
     tableItemsIds: List<Int> = listOf(),
     viewModel: MainViewModel
 ) {
+    val localView = LocalView.current
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -37,6 +40,7 @@ fun TableHeader(
         IconToggleButton(
             onCheckedChange = {
                 viewModel.onEvent(MainEvent.SelectSymbolsGroup(it, tableItemsIds))
+                localView.playSoundEffect(SoundEffectConstants.CLICK)
             },
             checked = viewModel.state.value.selectedSymbols.containsAll(tableItemsIds)
         ) {

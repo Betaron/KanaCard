@@ -1,5 +1,6 @@
 package com.betaron.kanacard.ui.main.components
 
+import android.view.SoundEffectConstants
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
@@ -34,9 +36,11 @@ fun ToggleButton(
     checked: Boolean = false,
     isStub: Boolean = false
 ) {
+    val localView = LocalView.current
     val rememberSelectSymbol: (checked: Boolean) -> Unit = remember {
         {
             viewModel.onEvent(MainEvent.SelectSymbol(it, id))
+            localView.playSoundEffect(SoundEffectConstants.CLICK)
         }
     }
 
