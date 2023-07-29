@@ -1,9 +1,15 @@
 package com.betaron.kanacard.ui.main.components
 
 import android.view.SoundEffectConstants
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.FilledIconToggleButton
@@ -26,6 +32,7 @@ import com.betaron.kanacard.ui.main.MainEvent
 import com.betaron.kanacard.ui.main.MainViewModel
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ToggleButton(
     modifier: Modifier = Modifier,
@@ -52,6 +59,8 @@ fun ToggleButton(
         animationSpec = tween(100, easing = LinearEasing)
     )
 
+    val delay = id * 8
+
     FilledIconToggleButton(
         modifier = modifier
             .scale(scale)
@@ -62,23 +71,37 @@ fun ToggleButton(
     ) {
         Row {
             Box(contentAlignment = Alignment.CenterEnd) {
-                Text(
-                    text = symbol,
-                    style = LocalTextStyle.current.merge(
-                        TextStyle(
-                            platformStyle = PlatformTextStyle(
-                                includeFontPadding = false
-                            ),
-                            lineHeightStyle = LineHeightStyle(
-                                alignment = LineHeightStyle.Alignment.Center,
-                                trim = LineHeightStyle.Trim.Both
+                AnimatedContent(
+                    targetState = symbol,
+                    transitionSpec = {
+                        fadeIn(
+                            animationSpec = tween(220, delayMillis = 90 + delay)
+                        ) +
+                                scaleIn(
+                                    initialScale = 0.92f,
+                                    animationSpec = tween(220, delayMillis = 90 + delay)
+                                ) with
+                                fadeOut(animationSpec = tween(90, delayMillis = delay))
+                    },
+                ) { targetSymbol ->
+                    Text(
+                        text = targetSymbol,
+                        style = LocalTextStyle.current.merge(
+                            TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false
+                                ),
+                                lineHeightStyle = LineHeightStyle(
+                                    alignment = LineHeightStyle.Alignment.Center,
+                                    trim = LineHeightStyle.Trim.Both
+                                )
                             )
-                        )
-                    ),
-                    fontFamily = notoSerifJpRegular,
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.End
-                )
+                        ),
+                        fontFamily = notoSerifJpRegular,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.End
+                    )
+                }
             }
             Box(contentAlignment = Alignment.TopStart) {
                 Text(

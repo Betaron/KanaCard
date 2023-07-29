@@ -337,22 +337,27 @@ fun MainScreen(
                                             .fillMaxSize(),
                                         contentAlignment = Center
                                     ) {
-                                        AutoSizeText(
-                                            text = state.alphabetSymbols[targetSymbolIndex],
-                                            style = LocalTextStyle.current.merge(
-                                                TextStyle(
-                                                    platformStyle = PlatformTextStyle(
-                                                        includeFontPadding = false
-                                                    ),
-                                                    lineHeightStyle = LineHeightStyle(
-                                                        alignment = LineHeightStyle.Alignment.Center,
-                                                        trim = LineHeightStyle.Trim.Both
-                                                    ),
-                                                    letterSpacing = (-24).sp
-                                                )
-                                            ),
-                                            fontFamily = notoSerifJpRegular
+                                        AnimatedContent(
+                                            targetState = state.alphabet
                                         )
+                                        { targetAlphabet ->
+                                            AutoSizeText(
+                                                text = state.alphabetSymbols[targetAlphabet][targetSymbolIndex],
+                                                style = LocalTextStyle.current.merge(
+                                                    TextStyle(
+                                                        platformStyle = PlatformTextStyle(
+                                                            includeFontPadding = false
+                                                        ),
+                                                        lineHeightStyle = LineHeightStyle(
+                                                            alignment = LineHeightStyle.Alignment.Center,
+                                                            trim = LineHeightStyle.Trim.Both
+                                                        ),
+                                                        letterSpacing = (-24).sp
+                                                    )
+                                                ),
+                                                fontFamily = notoSerifJpRegular
+                                            )
+                                        }
                                     }
                                     IconButton(
                                         modifier = Modifier

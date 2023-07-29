@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.betaron.kanacard.application.Alphabet
 import com.betaron.kanacard.use_case.AlphabetUseCases
 import com.betaron.kanacard.use_case.UtilUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,9 +29,7 @@ class MainViewModel @Inject constructor(
             is MainEvent.SwitchAlphabet -> {
                 if (state.value.alphabet != event.alphabetIndex)
                     _state.value = state.value.copy(
-                        alphabet = event.alphabetIndex,
-                        alphabetSymbols =
-                        alphabetUseCases.getAlphabetSymbolsSet(event.alphabetIndex)
+                        alphabet = event.alphabetIndex
                     )
 
                 viewModelScope.launch {
@@ -124,8 +123,11 @@ class MainViewModel @Inject constructor(
             val alphabetIndex = alphabetUseCases.getAlphabet()
             val lastSymbolIndex = alphabetUseCases.getLastSymbol()
             _state.value = state.value.copy(
+                alphabetSymbols = arrayOf(
+                    alphabetUseCases.getAlphabetSymbolsSet(Alphabet.hiragana_VALUE),
+                    alphabetUseCases.getAlphabetSymbolsSet(Alphabet.katakana_VALUE)
+                ),
                 alphabet = alphabetIndex,
-                alphabetSymbols = alphabetUseCases.getAlphabetSymbolsSet(alphabetIndex),
                 currentSymbolIndex = lastSymbolIndex,
                 selectedSymbols = alphabetUseCases.getSelectedSymbols().toMutableList()
             )

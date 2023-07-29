@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
@@ -108,7 +107,7 @@ fun SymbolsTable(
             ToggleButton(
                 modifier = Modifier
                     .padding(8.dp, top = 0.dp, bottom = 2.dp),
-                symbol = symbols[id],
+                symbol = symbols[viewModel.state.value.alphabet][id],
                 transcription = transcriptions[id],
                 id = id,
                 checked = id in selected,
