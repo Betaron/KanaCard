@@ -14,7 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
@@ -34,6 +37,7 @@ fun SymbolsTable(
     val symbols = viewModel.state.value.alphabetSymbols
     val transcriptions = stringArrayResource(R.array.transcription)
     val selected = viewModel.state.value.selectedSymbols
+    val haptic = LocalHapticFeedback.current
     var exceptionId by remember {
         mutableStateOf(-1)
     }
@@ -50,6 +54,7 @@ fun SymbolsTable(
         var currentKey: Int? = null
         detectDragGesturesAfterLongPress(
             onDragStart = { offset ->
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 lazyGridState.gridItemKeyAtPosition(offset)?.let { key ->
                     initialKey = key
                     currentKey = key
