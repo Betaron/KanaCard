@@ -101,25 +101,11 @@ fun MainScreen(
         stringResource(R.string.kata)
     )
 
-    val monographs = remember {
-        (1..35).toList() +
-                listOf(36, 0, 37, 0, 38) +
-                (39..43).toList() +
-                listOf(44, 0, 0, 0, 45) +
-                listOf(0, 0, 0, 0, 46)
-    }
-
-    val monographsWithDiacritics = remember {
-        (47..71).toList()
-    }
-
-    val digraphs = remember {
-        (72..92).toList()
-    }
-
-    val digraphsWithDiacritics = remember {
-        (93..107).toList()
-    }
+    val empty = remember { listOf(0, 37, 39, 47, 48, 49, 51, 52, 53, 54) }
+    val monographs = remember { (1..55).toList() }
+    val monographsWithDiacritics = remember { (56..80).toList() }
+    val digraphs = remember { (81..101).toList() }
+    val digraphsWithDiacritics = remember { (102..116).toList() }
 
     val systemBarsPaddings = with(localDensity) {
         PaddingValues(
@@ -210,7 +196,7 @@ fun MainScreen(
                             modifier = Modifier
                                 .align(CenterHorizontally),
                             title = stringResource(R.string.monographs),
-                            tableItemsIds = monographs.distinct() - 0,
+                            tableItemsIds = monographs - empty.toSet(),
                             viewModel = viewModel
                         )
 
@@ -218,6 +204,7 @@ fun MainScreen(
                             modifier = Modifier
                                 .height(550.dp),
                             ids = monographs,
+                            spaces = empty,
                             columns = 5,
                             viewModel = viewModel
                         )

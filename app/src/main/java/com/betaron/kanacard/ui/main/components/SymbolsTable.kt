@@ -8,10 +8,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -29,6 +25,7 @@ import com.betaron.kanacard.ui.main.MainViewModel
 fun SymbolsTable(
     modifier: Modifier = Modifier,
     ids: List<Int>,
+    spaces: List<Int> = listOf(),
     columns: Int,
     viewModel: MainViewModel
 ) {
@@ -37,9 +34,6 @@ fun SymbolsTable(
     val transcriptions = stringArrayResource(R.array.transcription)
     val selected = viewModel.state.value.selectedSymbols
     val haptic = LocalHapticFeedback.current
-    var exceptionId by remember {
-        mutableStateOf(-1)
-    }
 
     fun LazyGridState.gridItemKeyAtPosition(hitPoint: Offset): Int? =
         layoutInfo.visibleItemsInfo.find { itemInfo ->
@@ -66,21 +60,15 @@ fun SymbolsTable(
                 if (initialKey != null) {
                     lazyGridState.gridItemKeyAtPosition(change.position)?.let { key ->
                         if (currentKey != key) {
-                            val symbolsIds = viewModel.state.value.selectedSymbols
-                            val negative = mutableListOf<Int>()
-                            symbolsIds.forEach { item ->
-                                if (item <= 0)
-                                    negative.add(item)
-                            }
                             viewModel.onEvent(
                                 MainEvent.SetSelectedSymbols(
-                                    symbolsIds
+                                    viewModel.state.value.selectedSymbols
                                         .asSequence()
-                                        .minus(negative.toSet())
                                         .minus(initialKey!!..currentKey!!)
                                         .minus(currentKey!!..initialKey!!)
                                         .plus(initialKey!!..key)
                                         .plus(key..initialKey!!)
+                                        .minus(spaces.toSet())
                                         .toList()
                                 )
                             )
@@ -101,7 +89,7 @@ fun SymbolsTable(
     ) {
         items(
             ids,
-            key = { if (it > 0) it else exceptionId-- },
+            key = { it },
             contentType = { Int }
         ) { id ->
             ToggleButton(
@@ -112,7 +100,7 @@ fun SymbolsTable(
                 id = id,
                 checked = id in selected,
                 viewModel = viewModel,
-                isStub = id == 0
+                isStub = id in spaces
             )
         }
     }
