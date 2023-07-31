@@ -24,8 +24,8 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DynamicFeed
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,7 +43,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Alignment.Companion.TopEnd
@@ -136,6 +135,20 @@ fun MainScreen(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
+        sheetSwipeEnabled = false,
+
+        sheetDragHandle = {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth(),
+            ) {
+                BottomSheetDefaults.DragHandle(
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                )
+            }
+        },
         topBar = {
             Box(
                 modifier = Modifier
@@ -168,114 +181,93 @@ fun MainScreen(
                     .padding(start = 12.dp, end = 12.dp),
                 contentAlignment = TopCenter
             ) {
-                Column {
-                    Box(
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    TableHeader(
                         modifier = Modifier
-                            .padding(bottom = 4.dp)
-                            .fillMaxWidth(),
-                        contentAlignment = CenterEnd
+                            .align(CenterHorizontally),
+                        title = stringResource(R.string.monographs),
+                        tableItemsIds = monographs - empty.toSet(),
+                        viewModel = viewModel
                     )
-                    {
-                        IconButton(
-                            onClick = {
-                                localView.playSoundEffect(SoundEffectConstants.CLICK)
-                                scope.launch {
-                                    scaffoldState.bottomSheetState.hide()
-                                }
-                            },
-                        ) {
-                            Icon(imageVector = Icons.Outlined.Close, contentDescription = "Hide")
-                        }
-                    }
 
-                    Column(
+                    SymbolsTable(
                         modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        TableHeader(
-                            modifier = Modifier
-                                .align(CenterHorizontally),
-                            title = stringResource(R.string.monographs),
-                            tableItemsIds = monographs - empty.toSet(),
-                            viewModel = viewModel
-                        )
+                            .height(550.dp),
+                        ids = monographs,
+                        spaces = empty,
+                        columns = 5,
+                        viewModel = viewModel
+                    )
 
-                        SymbolsTable(
-                            modifier = Modifier
-                                .height(550.dp),
-                            ids = monographs,
-                            spaces = empty,
-                            columns = 5,
-                            viewModel = viewModel
-                        )
+                    Divider(
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .padding(8.dp)
+                    )
 
-                        Divider(
-                            modifier = Modifier
-                                .align(CenterHorizontally)
-                                .padding(8.dp)
-                        )
+                    TableHeader(
+                        modifier = Modifier
+                            .align(CenterHorizontally),
+                        title = stringResource(R.string.monographs_with_diacritics),
+                        tableItemsIds = monographsWithDiacritics,
+                        viewModel = viewModel
+                    )
 
-                        TableHeader(
-                            modifier = Modifier
-                                .align(CenterHorizontally),
-                            title = stringResource(R.string.monographs_with_diacritics),
-                            tableItemsIds = monographsWithDiacritics,
-                            viewModel = viewModel
-                        )
+                    SymbolsTable(
+                        modifier = Modifier
+                            .height(250.dp),
+                        ids = monographsWithDiacritics,
+                        columns = 5,
+                        viewModel = viewModel
+                    )
 
-                        SymbolsTable(
-                            modifier = Modifier
-                                .height(250.dp),
-                            ids = monographsWithDiacritics,
-                            columns = 5,
-                            viewModel = viewModel
-                        )
+                    Divider(
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .padding(8.dp)
+                    )
 
-                        Divider(
-                            modifier = Modifier
-                                .align(CenterHorizontally)
-                                .padding(8.dp)
-                        )
+                    TableHeader(
+                        modifier = Modifier
+                            .align(CenterHorizontally),
+                        title = stringResource(R.string.digraphs),
+                        tableItemsIds = digraphs,
+                        viewModel = viewModel
+                    )
 
-                        TableHeader(
-                            modifier = Modifier
-                                .align(CenterHorizontally),
-                            title = stringResource(R.string.digraphs),
-                            tableItemsIds = digraphs,
-                            viewModel = viewModel
-                        )
+                    SymbolsTable(
+                        modifier = Modifier
+                            .height(350.dp),
+                        ids = digraphs,
+                        columns = 3,
+                        viewModel = viewModel
+                    )
 
-                        SymbolsTable(
-                            modifier = Modifier
-                                .height(350.dp),
-                            ids = digraphs,
-                            columns = 3,
-                            viewModel = viewModel
-                        )
+                    Divider(
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .padding(8.dp)
+                    )
 
-                        Divider(
-                            modifier = Modifier
-                                .align(CenterHorizontally)
-                                .padding(8.dp)
-                        )
+                    TableHeader(
+                        modifier = Modifier
+                            .align(CenterHorizontally),
+                        title = stringResource(R.string.digraphs_with_diacritics),
+                        tableItemsIds = digraphsWithDiacritics,
+                        viewModel = viewModel
+                    )
 
-                        TableHeader(
-                            modifier = Modifier
-                                .align(CenterHorizontally),
-                            title = stringResource(R.string.digraphs_with_diacritics),
-                            tableItemsIds = digraphsWithDiacritics,
-                            viewModel = viewModel
-                        )
-
-                        SymbolsTable(
-                            modifier = Modifier
-                                .padding(bottom = systemBarsPaddings.calculateBottomPadding())
-                                .height(250.dp),
-                            ids = digraphsWithDiacritics,
-                            columns = 3,
-                            viewModel = viewModel
-                        )
-                    }
+                    SymbolsTable(
+                        modifier = Modifier
+                            .padding(bottom = systemBarsPaddings.calculateBottomPadding())
+                            .height(250.dp),
+                        ids = digraphsWithDiacritics,
+                        columns = 3,
+                        viewModel = viewModel
+                    )
                 }
             }
         }
