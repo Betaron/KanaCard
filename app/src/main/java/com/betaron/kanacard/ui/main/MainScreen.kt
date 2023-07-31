@@ -31,7 +31,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -65,7 +69,6 @@ import com.betaron.kanacard.ui.main.components.AutoSizeText
 import com.betaron.kanacard.ui.main.components.CardFace
 import com.betaron.kanacard.ui.main.components.FlipCard
 import com.betaron.kanacard.ui.main.components.RotationAxis
-import com.betaron.kanacard.ui.main.components.SegmentedButton
 import com.betaron.kanacard.ui.main.components.SymbolsTable
 import com.betaron.kanacard.ui.main.components.TableHeader
 import com.betaron.kanacard.ui.theme.notoSerifJpRegular
@@ -107,7 +110,8 @@ fun MainScreen(
         )
     }
 
-    val shake = animateDpAsState(targetValue = if (state.isCardShake) 0.dp else 0.1.dp,
+    val shake = animateDpAsState(
+        targetValue = if (state.isCardShake) 0.dp else 0.1.dp,
         animationSpec = repeatable(iterations = 8,
             repeatMode = RepeatMode.Reverse,
             animation = keyframes {
@@ -115,7 +119,8 @@ fun MainScreen(
                 (-16).dp at 10
                 16.dp at 20
             }),
-        label = "Shake")
+        label = "Shake"
+    )
 
     var flipState by remember {
         mutableStateOf(CardFace.Front)
@@ -148,11 +153,22 @@ fun MainScreen(
                     })
                     .fillMaxWidth(), contentAlignment = Center
             ) {
-                SegmentedButton(items = alphabets,
-                    defaultSelectedItemIndex = state.alphabet,
-                    onItemSelection = {
-                        viewModel.onEvent(MainEvent.SwitchAlphabet(it))
-                    })
+                SingleChoiceSegmentedButtonRow {
+                    alphabets.forEachIndexed { index, label ->
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.shape(
+                                position = index,
+                                count = alphabets.size
+                            ),
+                            onClick = {
+                                viewModel.onEvent(MainEvent.SwitchAlphabet(index))
+                            },
+                            selected = index == state.alphabet
+                        ) {
+                            Text(label)
+                        }
+                    }
+                }
             }
         },
         sheetContent = {
@@ -259,10 +275,10 @@ fun MainScreen(
                 .fillMaxWidth()
         ) {
             Column(modifier = Modifier.onGloballyPositioned { coordinates ->
-                    contentHeight = with(localDensity) {
-                        coordinates.size.height.toDp() - systemBarsPaddings.calculateTopPadding()
-                    }
-                }) {
+                contentHeight = with(localDensity) {
+                    coordinates.size.height.toDp() - systemBarsPaddings.calculateTopPadding()
+                }
+            }) {
                 Box(
                     modifier = Modifier.weight(1f)
                 ) {
