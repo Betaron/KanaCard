@@ -6,6 +6,7 @@ sealed class MainEvent {
     data class SelectSymbol(val checked: Boolean, val index: Int) : MainEvent()
     data class SelectSymbolsGroup(val checked: Boolean, val symbolsIds: List<Int>) : MainEvent()
     data class SetSelectedSymbols(val symbolsIds: List<Int>) : MainEvent()
+    data class SetSheetCollapsedState(val state: Boolean) : MainEvent()
     data class SwitchImeVisibility(val state: Boolean) : MainEvent()
     data class SetShakeState(val state: Boolean) : MainEvent()
     object SkipSymbol : MainEvent()

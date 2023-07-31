@@ -114,6 +114,12 @@ class MainViewModel @Inject constructor(
                 )
             }
 
+            is MainEvent.SetSheetCollapsedState -> {
+                _state.value = state.value.copy(
+                    isScaffoldCollapsed = event.state
+                )
+            }
+
             else -> {}
         }
     }

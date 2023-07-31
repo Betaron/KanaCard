@@ -83,7 +83,6 @@ fun MainScreen(
     insetsManager: InsetsManager
 ) {
     var contentHeight by remember { mutableStateOf(0.dp) }
-    var scaffoldCollapsed by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
     val localDensity = LocalDensity.current
@@ -170,9 +169,14 @@ fun MainScreen(
             }
         },
         sheetContent = {
-            scaffoldCollapsed = scaffoldState.bottomSheetState.currentValue == SheetValue.Hidden
-            LaunchedEffect(scaffoldCollapsed) {
-                viewModel.onEvent(MainEvent.SaveSelected)
+            viewModel.onEvent(
+                MainEvent.SetSheetCollapsedState(
+                    scaffoldState.bottomSheetState.currentValue == SheetValue.Hidden
+                )
+            )
+            LaunchedEffect(state.isScaffoldCollapsed) {
+                if (state.isScaffoldCollapsed)
+                    viewModel.onEvent(MainEvent.SaveSelected)
             }
 
             Box(

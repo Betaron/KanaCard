@@ -2,6 +2,8 @@ package com.betaron.kanacard.ui.main.components
 
 import android.view.SoundEffectConstants
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -59,7 +61,7 @@ fun ToggleButton(
         animationSpec = tween(100, easing = LinearEasing)
     )
 
-    val delay = id * 8
+    val delay = (id - 1) * 8
 
     FilledIconToggleButton(
         modifier = modifier
@@ -73,15 +75,20 @@ fun ToggleButton(
             Box(contentAlignment = Alignment.CenterEnd) {
                 AnimatedContent(
                     targetState = symbol,
-                    transitionSpec = {
-                        fadeIn(
-                            animationSpec = tween(220, delayMillis = 90 + delay)
-                        ) +
-                                scaleIn(
-                                    initialScale = 0.92f,
-                                    animationSpec = tween(220, delayMillis = 90 + delay)
-                                ) with
-                                fadeOut(animationSpec = tween(90, delayMillis = delay))
+                    transitionSpec =
+                    if (!viewModel.state.value.isScaffoldCollapsed) {
+                        {
+                            fadeIn(
+                                animationSpec = tween(220, delayMillis = 90 + delay)
+                            ) +
+                                    scaleIn(
+                                        initialScale = 0.92f,
+                                        animationSpec = tween(220, delayMillis = 90 + delay)
+                                    ) with
+                                    fadeOut(animationSpec = tween(90, delayMillis = delay))
+                        }
+                    } else {
+                        { EnterTransition.None with ExitTransition.None }
                     },
                 ) { targetSymbol ->
                     Text(
