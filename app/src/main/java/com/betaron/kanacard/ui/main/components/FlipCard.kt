@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -48,14 +49,16 @@ fun FlipCard(
         animationSpec = tween(
             durationMillis = 400,
             easing = FastOutSlowInEasing,
-        )
+        ),
+        label = "Card flip rotation"
     )
     val scale = animateFloatAsState(
         targetValue = if (cardFace.angle == 0f) 1f else 0.999f,
         animationSpec = keyframes {
             durationMillis = 400
             0.8f at 150 with FastOutSlowInEasing
-        }
+        },
+        label = "Card flip scale"
     )
 
     Card(
@@ -70,7 +73,10 @@ fun FlipCard(
                 cameraDistance = 12f * density
             }
             .scale(scale.value)
-            .shadow(4.dp),
+            .shadow(
+                elevation = 4.dp,
+                shape = CardDefaults.shape
+            ),
     ) {
         if (rotation.value <= 90f) {
             Box(
