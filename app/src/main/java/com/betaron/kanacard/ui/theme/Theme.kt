@@ -105,7 +105,11 @@ fun KanaCardTheme(
             window.navigationBarColor = Color.Transparent.toArgb()
             window.isStatusBarContrastEnforced = false
 
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+
+            WindowCompat.getInsetsController(window, view)
+                .isAppearanceLightStatusBars = !darkTheme
+            WindowCompat.getInsetsController(window, view)
+                .isAppearanceLightNavigationBars = !darkTheme
         }
     }
 

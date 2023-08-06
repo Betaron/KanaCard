@@ -66,6 +66,7 @@ dependencies {
     implementation "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.compose.material3:material3-android:1.2.0-alpha04'
+    implementation "androidx.core:core-splashscreen:1.0.1"
     kapt 'com.google.dagger:hilt-compiler:2.45'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
