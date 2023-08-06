@@ -107,7 +107,8 @@ fun MainScreen(
         )
     }
 
-    val shake = animateDpAsState(targetValue = if (state.isCardShake) 0.dp else 0.1.dp,
+    val shake = animateDpAsState(
+        targetValue = if (state.isCardShake) 0.dp else 0.1.dp,
         animationSpec = repeatable(iterations = 8,
             repeatMode = RepeatMode.Reverse,
             animation = keyframes {
@@ -115,7 +116,8 @@ fun MainScreen(
                 (-16).dp at 10
                 16.dp at 20
             }),
-        label = "Shake")
+        label = "Shake"
+    )
 
     var flipState by remember {
         mutableStateOf(CardFace.Front)
@@ -259,10 +261,10 @@ fun MainScreen(
                 .fillMaxWidth()
         ) {
             Column(modifier = Modifier.onGloballyPositioned { coordinates ->
-                    contentHeight = with(localDensity) {
-                        coordinates.size.height.toDp() - systemBarsPaddings.calculateTopPadding()
-                    }
-                }) {
+                contentHeight = with(localDensity) {
+                    coordinates.size.height.toDp() - systemBarsPaddings.calculateTopPadding()
+                }
+            }) {
                 Box(
                     modifier = Modifier.weight(1f)
                 ) {
