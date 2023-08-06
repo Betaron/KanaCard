@@ -69,6 +69,7 @@ fun SymbolsTable(
                                         .plus(initialKey!!..key)
                                         .plus(key..initialKey!!)
                                         .minus(spaces.toSet())
+                                        .distinct()
                                         .toList()
                                 )
                             )
