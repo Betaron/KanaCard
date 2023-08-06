@@ -10,8 +10,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.FilledIconToggleButton
@@ -58,7 +57,8 @@ fun ToggleButton(
 
     val scale by animateFloatAsState(
         targetValue = if (checked) 0.9f else 1f,
-        animationSpec = tween(100, easing = LinearEasing)
+        animationSpec = tween(100, easing = LinearEasing),
+        label = "Check scale"
     )
 
     val delay = (id - 1) * 8
@@ -79,17 +79,15 @@ fun ToggleButton(
                     if (!viewModel.state.value.isScaffoldCollapsed) {
                         {
                             fadeIn(
-                                animationSpec = tween(220, delayMillis = 90 + delay)
-                            ) +
-                                    scaleIn(
-                                        initialScale = 0.92f,
-                                        animationSpec = tween(220, delayMillis = 90 + delay)
-                                    ) with
-                                    fadeOut(animationSpec = tween(90, delayMillis = delay))
+                                animationSpec = tween(200, delayMillis = delay)
+                            ) togetherWith fadeOut(
+                                animationSpec = tween(200, delayMillis = delay)
+                            )
                         }
                     } else {
-                        { EnterTransition.None with ExitTransition.None }
+                        { EnterTransition.None togetherWith ExitTransition.None }
                     },
+                    label = "Alphabet switch",
                 ) { targetSymbol ->
                     Text(
                         text = targetSymbol,
