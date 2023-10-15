@@ -1,4 +1,4 @@
- ![icon-color-small](https://github.com/Betaron/KanaCard/assets/61901199/41975aaf-4693-4723-a383-a2748f6a3c5c) KanaCard
+# ![icon-color-small](https://github.com/Betaron/KanaCard/assets/61901199/41975aaf-4693-4723-a383-a2748f6a3c5c) KanaCard
 
 ## Description
 This application is designed for learning and practicing Japanese alphabets: Hiragana and Katakana.
